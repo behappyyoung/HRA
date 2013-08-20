@@ -17,7 +17,17 @@ class HRA {
         $output = substr($output, strpos($output, '{'));
         return $output;
     }
-    protected function saveInfo(){
 
+    protected function saveInfo($data, $guid){
+        if(($data=='')||($guid=='')) return false;
+        $subquery = '';
+        foreach($data as $key => $value){
+            $subquery .= '`'.$key.'` = "'.$value.'",';
+        }
+        $subquery = substr($subquery, 0, -1);
+        $query = 'UPDATE ' . elgg_get_config("dbprefix") . 'hra_basicinfo SET  '. $subquery .' WHERE guid = '.$guid;
+        echo $query;
+        $result = update_data($query);
+        return $result;
     }
 }

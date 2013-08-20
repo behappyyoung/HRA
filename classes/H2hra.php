@@ -22,8 +22,12 @@ define('HRA_RESULT', HRA_BASERUL.'/hra/result/');
 
 class H2hra extends HRA{
 
-    public static function getSession(){
-
+    public static function getSession($username, $password){
+        $createURL = HRA_CREATE_SESSION;
+        $para = array('username'=>$username,
+                        'password' => $password);
+        $output = HRA::getJsonData($createURL, $para, 'post');
+        return $output;
     }
 
     public static function getQuestions($token){
@@ -90,8 +94,51 @@ class H2hra extends HRA{
 
     }
 
-    public static function createAccount($guid, $username, $firstname, $lastname){
-        return $guid. $username. $firstname. $lastname;
+    public static function createAccount($guid, $username, $firstname, $lastname, $gender, $email){
+        $createURL = HRA_CREATE_PATIENT;
+        $password = $username;
+        $para = array('firstname' =>$firstname,
+                        'lastname'=> $lastname,
+                        'gender' => $gender,
+                        'email' => $email,
+                        'username'=>$username,
+                        'password'=>$password);
+
+        $output = HRA::getJsonData($createURL, $para, 'get');
+        if($output){
+            var_dump($output);
+            HRA::saveInfo($para, $guid);
+            $token = H2hra::getSession($username, $password);
+            var_dump($token);
+
+        }
+        return $guid. $username. $firstname. $lastname.$gender;
+
     }
 
+    public static function checkUser($guid){
+
+       $query = 'SELECT *  FROM ' . elgg_get_config("dbprefix") . 'hra_basicinfo WHERE guid ='.$guid;
+
+        $hrauserinfo = get_data($query);
+
+        return $hrauserinfo;
+
+
+    }
+
+    public static function getToken($guid){
+
+        $query = 'SELECT token  FROM ' . elgg_get_config("dbprefix") . 'hra_basicinfo WHERE guid ='.$guid;
+
+        try{
+             $results = get_data($query);
+             echo $results[0];
+        } catch (Exception $e) {
+           // $token = 'Error : '.$e->getMessage();
+            $token ='';
+        }
+           return $token;
+
+    }
 }

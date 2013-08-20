@@ -10,34 +10,37 @@
 <?php
 
 $user = elgg_get_logged_in_user_entity();
-//var_dump($GLOBALS);
-var_dump($user);
-$username= $user->get('username');
-$name= explode(' ', $user->get('name'));
 $guid =  $user->getGUID();
 
-echo  H2hra::createAccount($guid, $username, $name[0], $name[1]);
+//check if user has taken any HRA or has account
 
-$patientsMetadata = elgg_get_metadata(array(
-    "metadata_names" =>  array("gender"),
-    'metadata_owner_guids' =>  array("63")
-));
+$token = H2hra::getToken($guid);
+if($token==''){
 
-var_dump($patientsMetadata);
+    $username= $user->get('username');
+    $email= $user->get('email');
+    $name= explode(' ', $user->get('name'));
+    $guid =  $user->getGUID();
 
-foreach($patientsMetadata as $currentMetadata){
-        $meta_export= $currentMetadata->export();
+    $patientsMetadata = elgg_get_metadata(array(
+        "metadata_names" =>  array("gender"),
+        'metadata_owner_guids' =>  array(63)
+    ));
 
-    var_dump($meta_export);
+//    var_dump($patientsMetadata);
+    foreach($patientsMetadata as $currentMetadata){
+            $meta_export= $currentMetadata->export();
 
+        $gender = $meta_export->getBody();
+    }
 
-    $value = $meta_export->getBody();
-
-    echo $value;
-
+echo  H2hra::createAccount($guid, $username, $name[0], $name[1], $gender, $email);
 }
-?>
 
+
+
+?>
+<br />
 HRA History <br />
 <table class="hra-table">
     <th>HRA</th><th>date</th><th>score</th>
