@@ -10,15 +10,32 @@
 class HRA {
     protected function getJsonData($url, $para, $post=true){
         $ch = curl_init($url);
+
         curl_setopt($ch, CURLOPT_HEADER, 0);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, $post);
+        if($post){
+            curl_setopt($ch, CURLOPT_POST,1);
+            curl_setopt($ch,CURLOPT_POSTFIELDS, $para);
+        }else{
+            curl_setopt($ch, CURLOPT_POST,0);
+        }
+
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         $output = curl_exec($ch);
         curl_close($ch);
         $output = substr($output, strpos($output, '{'));
         return $output;
     }
 
-    protected function saveInfo($data, $guid){
+    protected function saveInfo($data, $table){
+        if($data=='') return false;
+        $keys = implode(',',array_keys($data));
+        $values =  implode('","',array_values($data));
+        $query = 'INSERT INTO '. elgg_get_config("dbprefix") . $table. ' ( ' . $keys.' ) VALUES (" '. $values.'")';
+        $result = insert_data($query);
+        return $result;
+    }
+
+    protected function updateInfo($data, $guid){
         if(($data=='')||($guid=='')) return false;
         $subquery = '';
         foreach($data as $key => $value){
@@ -26,8 +43,9 @@ class HRA {
         }
         $subquery = substr($subquery, 0, -1);
         $query = 'UPDATE ' . elgg_get_config("dbprefix") . 'hra_basicinfo SET  '. $subquery .' WHERE guid = '.$guid;
-        echo $query;
         $result = update_data($query);
         return $result;
     }
+
+
 }

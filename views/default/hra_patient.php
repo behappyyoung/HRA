@@ -6,49 +6,50 @@
 
 </style>
 
-<a href="<?=elgg_get_site_url()?>hra/basic/">Take New Test</a> <br />
+
 <?php
 
-$user = elgg_get_logged_in_user_entity();
-$guid =  $user->getGUID();
+
+
+$patientinfo = elgg_extract('patientinfo', $vars, '');
+
+$guid =  $patientinfo['guid'];
 
 //check if user has taken any HRA or has account
 
-$token = H2hra::getToken($guid);
-if($token==''){
+$hrauserinfo =(array) H2hra::getHraUser($guid);
 
-    $username= $user->get('username');
-    $email= $user->get('email');
-    $name= explode(' ', $user->get('name'));
-    $guid =  $user->getGUID();
 
-    $patientsMetadata = elgg_get_metadata(array(
-        "metadata_names" =>  array("gender"),
-        'metadata_owner_guids' =>  array(63)
-    ));
-
-//    var_dump($patientsMetadata);
-    foreach($patientsMetadata as $currentMetadata){
-            $meta_export= $currentMetadata->export();
-
-        $gender = $meta_export->getBody();
-    }
-
-echo  H2hra::createAccount($guid, $username, $name[0], $name[1], $gender, $email);
+if(empty($hrauserinfo)){
+    echo H2hra::createAccount($patientinfo['guid'], $patientinfo['username'], $patientinfo['firstname'],
+        $patientinfo['lastname'], $patientinfo['gender'], $patientinfo['email']);
+}elseif($hrauserinfo['token']==''){
+    $token = H2hra::getSession($hrauserinfo['username'], $hrauserinfo['password']);
+    echo H2hra::saveToken($guid, $token);
+}else{
+    echo '<a href="'.elgg_get_site_url().'hra/basic/">Take New Test</a> <br />';
+    $hrainfo = (array) H2hra::getHraStat($guid);
+    //var_dump($hrainfo);
 }
 
 
 
 ?>
 <br />
-HRA History <br />
+HRA STATS <br />
 <table class="hra-table">
-    <th>HRA</th><th>date</th><th>score</th>
-    <tr>
-        <td>fdsfas</td>
-        <td>08-19-2013</td>
-        <td>20</td>
-    </tr>
+    <th>HRA</th><th>date</th><th>rescore</th>
+    <?php
+           foreach($hrainfo as $stat){
+               echo '<tr><td>'.$stat->hra_id.'</td> <td>'.$stat->date.'</td>  <td>';
+               if($stat->done){
+                   echo $stat->score;
+               }else{
+                   echo '<a href="'.elgg_get_site_url().'hra/basic/'.$stat->hra_id.'"> Continue </a>';
+               }
+               echo '</td></tr>';
+           }
+    ?>
 </table>
 
 
