@@ -32,3 +32,24 @@ CREATE TABLE `elgg_imhomedev_hra_stat` (
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 
 
+
+CREATE TABLE `elgg_imhomedev_hra_answer` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `qid` int(11) DEFAULT NULL,
+  `type` varchar(45) DEFAULT NULL,
+  `desc` varchar(45) DEFAULT NULL,
+  `uuid` varchar(45) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1
+
+
+
+CREATE TABLE `elgg_imhomedev_hra_questions` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `qid` varchar(45) DEFAULT NULL,
+  `name` varchar(45) DEFAULT NULL,
+  `desc` varchar(45) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1
+
+
