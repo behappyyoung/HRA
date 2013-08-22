@@ -26,7 +26,7 @@ function hra_public($hook, $handler, $return, $params) {
 function hra_page_handler($page) {
     $user = elgg_get_logged_in_user_entity();
     $guid =  $user->getGUID();
-
+ //var_dump($user);
     $isadmin= $user->get('admin');
     $username= $user->get('username');
     $email= $user->get('email');
@@ -50,7 +50,7 @@ function hra_page_handler($page) {
                             'gender'=>$gender,
                             'email'=>$email);
 
-// var_dump($patientinfo);
+
     if (!isset($page[0])) {
         $page[0] = 'index';
     }

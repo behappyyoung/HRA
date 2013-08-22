@@ -1,5 +1,4 @@
 <?php
-$debug = ($_SERVER['SERVER_NAME']=='localhost')?true: false;
 
 $guid = elgg_extract('guid', $vars, '');
 $hra_id = elgg_extract('hra_id', $vars, '');
@@ -9,22 +8,16 @@ $token = $userinfo['token'];
 
 
 $myResult = H2hra::getResult($token,$hra_id);
-if($debug)var_dump($myResult);
-
-
 
 $myAnswers = H2hra::getAnswers($token,$hra_id);
 
-var_dump($myAnswers);
+if($debug)var_dump($myAnswers);
 $serialAnswers = serialize($myAnswers);
-
-echo $serialAnswers;
-
 
 //save result
 $para = $myResult;
-$para['answerlists'] = $serialAnswers;
-//$result = H2hra::updateResult($guid, $para);
+$para['answerlists'] = str_replace('"', '\'', $serialAnswers);
+$result = H2hra::updateResult($guid, $hra_id, $para);
 
 
 ?>
@@ -50,11 +43,6 @@ $para['answerlists'] = $serialAnswers;
 
 </style>
 
-<form class="form" id="patient-hra-form" title="Patient hra"  method="post"
-      action="<?php echo elgg_add_action_tokens_to_url("/action/hra/save_life"); ?>">
-    <input type="hidden" name="guid" value="<?=$guid?>" />
-    <input type="hidden" name="token" value="<?=$token?>" />
-    <input type="hidden" name="hra_id" value="<?=$hra_id?>" />
     <div class="form-tabs" id="form-tabs"> </div>
     <div class="subtitle" > <?=$subtitle?> </div>
          <div id="tabs-basic" class="basic-form">
@@ -71,8 +59,7 @@ $para['answerlists'] = $serialAnswers;
 
             </table>
                 <div class="buttons">
-                    <button  class="save" > DONE </button>
+                    <a href="<?=elgg_get_site_url()?>hra/" > DONE </a>
                 </div>
             </div>
-    </form>
 

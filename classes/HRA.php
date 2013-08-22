@@ -47,5 +47,16 @@ class HRA {
         return $result;
     }
 
+    protected function updateHra($guid, $hraid, $data, $table){
+        if(($data=='')||($guid=='')||($hraid=='')) return false;
+        $subquery = '';
+        foreach($data as $key => $value){
+            $subquery .= '`'.$key.'` = "'.$value.'",';
+        }
+        $subquery = substr($subquery, 0, -1);
+        $query = 'UPDATE ' . elgg_get_config("dbprefix") . $table. ' SET  '. $subquery .' WHERE guid = '.$guid .' AND hra_id ='.$hraid;
+        $result = update_data($query);
+        return $result;
+    }
 
 }

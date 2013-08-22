@@ -24,7 +24,6 @@ if($retry){
     $token = $userinfo['token'];
 
 
-    echo $hra_id;
     if($hra_id==''){                // new
         $hra_id= H2hra::getAssessment($token);
 

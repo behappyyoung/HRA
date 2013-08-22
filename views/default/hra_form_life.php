@@ -6,8 +6,6 @@ $userinfo = (array) H2hra::getHraUser($guid);
 $token = $userinfo['token'];
 
 $myAnswers = H2hra::getAnswers($token,$hra_id);
-var_dump($myAnswers);
-
 
 //  need to update to real API
 
@@ -72,7 +70,8 @@ foreach($questions as $question){
                             echo '<input type="text" name="answers['.$questionArray['name'].']" />' ;
                         }else{
                             foreach($questionArray['answerArray'] as $answerObject){
-                                echo  '<input type="radio" name="answers['.$questionArray['name'].']" value=" '.$answerObject->uuid.'"  class="checkbox" > '.$answerObject->desc.'<br />';
+                                $selected = ($myAnswers[$questionid]==$answerObject->uuid) ? 'checked=checked ' : '';
+                                echo  '<input type="radio" name="answers['.$questionArray['name'].']" value=" '.$answerObject->uuid.'"'.$selected.' class="checkbox" > '.$answerObject->desc.'<br />';
                             }
                         }
 

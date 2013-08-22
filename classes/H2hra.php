@@ -141,8 +141,19 @@ class H2hra extends HRA{
         $query = 'SELECT *  FROM ' . elgg_get_config("dbprefix") . HRA_STAT_TABLE.$subquery.$orderby;
         $hrainfo = get_data($query);
         return $hrainfo;
-
     }
+
+    public static function getHraStatMember($guids='', $orderby=''){
+        $subquery = ($guid=='') ? '' : ' WHERE guid in ( ' .$guids.') ' ;
+        $orderby = ($orderby=='') ? '' : ' ORDER BY ' .$orderby ;
+        $query = 'SELECT S.*, I.first_name, I.last_name  FROM ' . elgg_get_config("dbprefix") . HRA_STAT_TABLE.' S JOIN '
+            . elgg_get_config("dbprefix") .HRA_INFO_TABLE.' I ON S.guid = I.guid '.$subquery. $orderby;
+        $hrainfo = get_data($query);
+        return $hrainfo;
+    }
+
+
+
 
     public static function getToken($guid){
 
@@ -172,8 +183,8 @@ class H2hra extends HRA{
         return HRA::updateInfo($guid, $para, HRA_INFO_TABLE);
     }
 
-    public static function updateResult($guid, $para){
-        return HRA::updateInfo($guid, $para, HRA_STAT_TABLE);
+    public static function updateResult($guid, $hra_id, $para){
+        return HRA::updateHra($guid, $hra_id, $para, HRA_STAT_TABLE);
     }
 
     public static function getBasicQuestions($cat, $orderby=''){
