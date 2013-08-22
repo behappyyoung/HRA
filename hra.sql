@@ -57,9 +57,13 @@ CREATE TABLE `elgg_imhomedev_hra_stat` (
   `calories_goal` int(11) DEFAULT NULL,
   `strength_level` varchar(45) DEFAULT NULL,
   `fitness_classification_level` varchar(45) DEFAULT NULL,
+  `vo2_max` varchar(45) DEFAULT NULL,
+  `aerobic_capacity` varchar(45) DEFAULT NULL,
   `answerlists` varchar(300) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+
+
 
 
 LOCK TABLES `elgg_imhomedev_hra_questions` WRITE;
