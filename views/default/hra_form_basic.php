@@ -1,34 +1,62 @@
 <?php
-$guid = elgg_extract('guid', $vars, '');
-$hra_id = elgg_extract('hra_id', $vars, '');
+$retry = (isset($_GET['retry'])&&($_GET['retry'])) ? true : false;
 
-$userinfo = (array) H2hra::getHraUser($guid);
-$token = $userinfo['token'];
+if($retry){
+    $error = (isset($_GET['error'])&&($_GET['error'])) ? $_GET['error'] : '';
+    $guid = $_GET["guid"];
+    $token = $_GET["token"];
+    $hra_id = $_GET["hra_id"];
+    $age = $_GET['age'];
+    $gender = $_GET['gender'];
+    $ethnicity = $_GET["ethnicity"];
+    $weight = $_GET["weight"];
+    $height = $_GET["height"];
+
+}else{
 
 
-echo $hra_id;
-if($hra_id==''){                // new
-    $hra_id= H2hra::getAssessment($token);
 
-    $hrainfo = (array) H2hra::getHraStat($guid);
-    if($hrainfo[0]->hra_id == $hra_id){
-        //var_dump($hrainfo);
-        echo 'only one time per day  [retake ? ]';
-    }else{
-        $result = H2hra::saveHraid($guid, $hra_id);
+    $guid = elgg_extract('guid', $vars, '');
+    $hra_id = elgg_extract('hra_id', $vars, '');
+
+    $userinfo = (array) H2hra::getHraUser($guid);
+ //var_dump($userinfo);
+    $token = $userinfo['token'];
+
+
+    echo $hra_id;
+    if($hra_id==''){                // new
+        $hra_id= H2hra::getAssessment($token);
+
+        $hrainfo = (array) H2hra::getHraStat($guid, 'hra_id desc');
+
+        if($hrainfo[0]->hra_id == $hra_id){
+            //var_dump($hrainfo);
+            echo 'only one time per day  [retake ? ]';
+            //$answers = H2hra::getAnswers($token, $hra_id);
+
+        }else{
+            $result = H2hra::saveHraid($guid, $hra_id);
+        }
+
+    //    $questions = H2hra::getQuestions($token);
+    }else{              // retake ones
+
+        //$answers = H2hra::getAnswers($token, $hra_id);
+
+        //$questions = H2hra::getQuestions($token, $hra_id);
     }
 
-    $questions = H2hra::getQuestions($token);
-}else{              // retake ones
+    $age = $userinfo['age'];
+    $gender = $userinfo['gender'];
+    $ethnicity = $userinfo["ethnicity"];
+    $height = explode('.', $userinfo['height']);
+    $feet = $height[0];
+    $inches = $height[1];
+    $weight = $userinfo["height"];
 
-    $answers = H2hra::getAnswers($token, $hra_id);
-var_dump($answers);
-    //$questions = H2hra::getQuestions($token, $hra_id);
+
 }
-
-
-
-
 
 ?>
 <style>
@@ -47,10 +75,16 @@ var_dump($answers);
     .buttons .cancel {background-color: #d0cbce;}
     .buttons .save {background-color: #9295a4;}
 
+    .error {color: red;}
+
 
 </style>
+<div class="error" ><?=$error?></div>
 <form class="form" id="patient-hra-form" title="Patient hra" method="post"
              action="<?php echo elgg_add_action_tokens_to_url("/action/hra/save_basic"); ?>">
+    <input type="hidden" name="guid" value="<?=$guid?>" />
+    <input type="hidden" name="token" value="<?=$token?>" />
+    <input type="hidden" name="hra_id" value="<?=$hra_id?>" />
         <div class="form-tabs" id="form-tabs">
         </div>
          <div id="tabs-basic" class="basic-form">
@@ -62,7 +96,8 @@ var_dump($answers);
                     </td>
                     <td class="input">
 
-                        <input type="text" class="smallinput" name="age"  />
+                        <input type="text" class="smallinput" name="age" value="<?=$age?>" />
+
                     </td>
                 </tr>
                 <tr>
@@ -71,8 +106,8 @@ var_dump($answers);
                     </td>
                     <td class="input">
 
-                        <input type="radio" name="gender" value="1"  class="checkbox" > Female
-                        <input type="radio" name="gender" value="2"  class="checkbox"> Male
+                        <input type="radio" name="gender" value="F"  class="checkbox"  <?=($gender=='F')? 'checked=checked ':''?> > Female
+                        <input type="radio" name="gender" value="M"  class="checkbox" <?=($gender=='M')? 'checked=checked ':''?> > Male
                     </td>
 
                 </tr>
@@ -82,8 +117,8 @@ var_dump($answers);
                       </td>
                       <td class="input">
 
-                          <input type="text" class="smallinput" name="feet"  />(feet)
-                          <input type="text" class="smallinput" name="inches"  />(inches)
+                          <input type="text" class="smallinput" name="feet"  value="<?=$feet?>" />(feet)
+                          <input type="text" class="smallinput" name="inches" value="<?=$inches?>"  />(inches)
                       </td>
                   </tr>
                   <tr>
@@ -92,7 +127,7 @@ var_dump($answers);
                       </td>
                       <td class="input">
 
-                          <input type="text" class="smallinput" name="pounds"  />(Pounds)
+                          <input type="text" class="smallinput" name="weight" value="<?=$weight?>" />(Pounds)
                       </td>
                   </tr>
                   <tr>
@@ -101,10 +136,10 @@ var_dump($answers);
                       </td>
                       <td class="input">
                           <?php echo elgg_view("shn/input/races",array(
-                              "type" => "radio",
-                              "name" => "race",
-                              "class" =>"checkbox",
-                              "required" => ""
+                              "name" => "ethnicity",
+                              "class" =>"",
+                              "required" => "",
+                              "value"=> $ethnicity
                           ));
                           ?>
 

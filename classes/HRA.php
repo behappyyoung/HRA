@@ -35,7 +35,7 @@ class HRA {
         return $result;
     }
 
-    protected function updateInfo($data, $guid){
+    protected function updateInfo($guid,$data){
         if(($data=='')||($guid=='')) return false;
         $subquery = '';
         foreach($data as $key => $value){
