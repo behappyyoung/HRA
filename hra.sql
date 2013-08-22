@@ -9,14 +9,13 @@ CREATE TABLE `elgg_imhomedev_hra_answers` (
 ) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=latin1;
 
 
-
 CREATE TABLE `elgg_imhomedev_hra_basicinfo` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `shn_userid` int(11) NOT NULL,
   `guid` int(11) NOT NULL,
   `first_name` varchar(45) DEFAULT NULL,
   `last_name` varchar(45) DEFAULT NULL,
-  `gender` char(1) DEFAULT NULL,
+  `gender` varchar(6) DEFAULT NULL,
   `email` varchar(45) DEFAULT NULL,
   `username` varchar(45) DEFAULT NULL,
   `password` varchar(45) DEFAULT NULL,

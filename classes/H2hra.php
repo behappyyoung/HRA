@@ -161,14 +161,19 @@ class H2hra extends HRA{
 
     public static function saveToken($guid, $token){
         $para = array('token'=>$token);
-        return HRA::updateInfo($guid, $para);
+        return HRA::updateInfo($guid, $para, HRA_INFO_TABLE);
     }
     public static function saveHraid($guid, $hra_id){
         $para = array('guid'=>$guid, 'hra_id'=>$hra_id, 'date'=>date('m-d-Y'));
         return HRA::saveInfo($para, HRA_STAT_TABLE);
     }
+
     public static function updateBasicInfo($guid, $para){
-        return HRA::updateInfo($guid, $para);
+        return HRA::updateInfo($guid, $para, HRA_INFO_TABLE);
+    }
+
+    public static function updateResult($guid, $para){
+        return HRA::updateInfo($guid, $para, HRA_STAT_TABLE);
     }
 
     public static function getBasicQuestions($cat, $orderby=''){

@@ -35,14 +35,14 @@ class HRA {
         return $result;
     }
 
-    protected function updateInfo($guid,$data){
+    protected function updateInfo($guid,$data, $table){
         if(($data=='')||($guid=='')) return false;
         $subquery = '';
         foreach($data as $key => $value){
             $subquery .= '`'.$key.'` = "'.$value.'",';
         }
         $subquery = substr($subquery, 0, -1);
-        $query = 'UPDATE ' . elgg_get_config("dbprefix") . 'hra_basicinfo SET  '. $subquery .' WHERE guid = '.$guid;
+        $query = 'UPDATE ' . elgg_get_config("dbprefix") . $table. ' SET  '. $subquery .' WHERE guid = '.$guid;
         $result = update_data($query);
         return $result;
     }

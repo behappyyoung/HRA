@@ -1,4 +1,6 @@
 <?php
+$debug = ($_SERVER['SERVER_NAME']=='localhost')?true: false;
+
 $guid = elgg_extract('guid', $vars, '');
 $hra_id = elgg_extract('hra_id', $vars, '');
 
@@ -7,11 +9,22 @@ $token = $userinfo['token'];
 
 
 $myResult = H2hra::getResult($token,$hra_id);
-var_dump($myResult);
+if($debug)var_dump($myResult);
+
+
 
 $myAnswers = H2hra::getAnswers($token,$hra_id);
-var_dump($myAnswers);
 
+var_dump($myAnswers);
+$serialAnswers = serialize($myAnswers);
+
+echo $serialAnswers;
+
+
+//save result
+$para = $myResult;
+$para['answerlists'] = $serialAnswers;
+//$result = H2hra::updateResult($guid, $para);
 
 
 ?>
