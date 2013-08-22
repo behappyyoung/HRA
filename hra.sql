@@ -1,4 +1,5 @@
 
+DROP TABLE IF EXISTS  `elgg_imhomedev_hra_answers` ;
 CREATE TABLE `elgg_imhomedev_hra_answers` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `qid` int(11) DEFAULT NULL,
@@ -8,7 +9,7 @@ CREATE TABLE `elgg_imhomedev_hra_answers` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=latin1;
 
-
+DROP TABLE IF EXISTS  `elgg_imhomedev_hra_basicinfo`  ;
 CREATE TABLE `elgg_imhomedev_hra_basicinfo` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `shn_userid` int(11) NOT NULL,
@@ -30,7 +31,7 @@ CREATE TABLE `elgg_imhomedev_hra_basicinfo` (
   UNIQUE KEY `guid_UNIQUE` (`guid`)
 ) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=latin1;
 
-
+DROP TABLE IF EXISTS  `elgg_imhomedev_hra_questions`  ;
 CREATE TABLE `elgg_imhomedev_hra_questions` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `qid` int(11) DEFAULT NULL,
@@ -42,7 +43,7 @@ CREATE TABLE `elgg_imhomedev_hra_questions` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=latin1;
 
-
+DROP TABLE IF EXISTS  `elgg_imhomedev_hra_stat`  ;
 CREATE TABLE `elgg_imhomedev_hra_stat` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `guid` int(11) DEFAULT NULL,
