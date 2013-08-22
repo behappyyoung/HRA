@@ -75,16 +75,32 @@ class H2hra extends HRA{
     }
 
 
+    public static function getResult($token, $hraID){
+        $resultURL = HRA_RESULT.'?token='.$token;
+        $para = array('hra_id'=>$hraID);
+        $output = HRA::getJsonData($resultURL, $para, true);
+        $decodedArray = json_decode($output, true);
+        $responseArray = ($decodedArray['data']['response']['results']);
+        if(empty($responseArray)){
+             return 'no answer for this hra';
+        }else{
+            return $responseArray;
+        }
+    }
+
     public static function getAnswers($token, $hraID){
         $resultURL = HRA_RESULT.'?token='.$token;
         $para = array('hra_id'=>$hraID);
         $output = HRA::getJsonData($resultURL, $para, true);
         $decodedArray = json_decode($output, true);
-        $responseArray = ($decodedArray['data']['response']);
+        $responseArray = ($decodedArray['data']['response']['answers']);
         if(empty($responseArray)){
-             return 'no answer for this hra';
+            return 'no answer for this hra';
         }else{
-            return $responseArray;
+            foreach($responseArray as $answers){
+                $answerArray[$answers['question_id']] = $answers['score'];
+            }
+            return $answerArray;
         }
     }
 
@@ -161,7 +177,7 @@ class H2hra extends HRA{
         $questions = (array) get_data($query);
         return $questions;
     }
-    public static function getAnswerStrings($qid, $orderby=''){
+    public static function getBasicAnswers($qid, $orderby=''){
         $orderby = ($orderby=='') ? ' ORDER BY id ' : ' ORDER BY ' .$orderby ;
         $query = 'SELECT *  FROM ' . elgg_get_config("dbprefix") . HRA_ANSWER_TABLE.' WHERE qid = "'.$qid.'"'.$orderby;
         $answers = (array) get_data($query);

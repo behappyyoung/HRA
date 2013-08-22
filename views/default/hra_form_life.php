@@ -1,12 +1,25 @@
 <?php
-    $questions =  H2hra::getBasicQuestions('lifestyle', 'qid');
+$guid = elgg_extract('guid', $vars, '');
+$hra_id = elgg_extract('hra_id', $vars, '');
+
+$userinfo = (array) H2hra::getHraUser($guid);
+$token = $userinfo['token'];
+
+$myAnswers = H2hra::getAnswers($token,$hra_id);
+var_dump($myAnswers);
+
+
+//  need to update to real API
+
+
+$questions =  H2hra::getBasicQuestions('lifestyle', 'qid');
 
 
 foreach($questions as $question){
     if($question->type==0){                         //main
         $subtitle = $question->name;
     }elseif($question->type ==1){                            //sub - real questions
-        $answers =  H2hra::getAnswerStrings($question->qid);
+        $answers =  H2hra::getBasicAnswers($question->qid);
         $cq[$question->qid] = array('name' => $question->name,
                                     'desc' => $question->desc,
                                      'answerArray'=> $answers);
@@ -14,6 +27,7 @@ foreach($questions as $question){
     }
 }
 
+//
 
 ?>
 

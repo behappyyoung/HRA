@@ -23,6 +23,9 @@ foreach($answerPost as $key => $value){
 
 $result = H2hra::postAnswers($token, $answerArray);
 
-$forwardURL = elgg_get_site_url().'/hra/finish/'.$hra_id;
+$forwardURL = elgg_get_site_url().'hra/life/'.$hra_id;
+
+exit();
+    $forwardURL = elgg_get_site_url().'/hra/finish';
 
 forward($forwardURL);

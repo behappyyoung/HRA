@@ -13,6 +13,7 @@ function hra_init() {
     $action_base_path = elgg_get_plugins_path() . 'hra/actions/patient';
     elgg_register_action("hra/save_basic", "$action_base_path/save_basic.php");
     elgg_register_action("hra/save_life", "$action_base_path/save_life.php");
+    elgg_register_action("hra/save_finish", "$action_base_path/save_finish.php");
 
 
 }
@@ -66,11 +67,12 @@ function hra_page_handler($page) {
             break;
         case 'basic':
             $form = elgg_view('hra_form_basic', array('guid'=>$guid, 'hra_id'=>$page[1]));
-            $form .= 'test';
             break;
         case 'life' ;
-            $form = elgg_view('hra_form_life', array('guid'=>$guid));
-            $form .= 'test2';
+            $form = elgg_view('hra_form_life', array('guid'=>$guid, 'hra_id'=>$page[1]));
+            break;
+        case 'finish' ;
+            $form = elgg_view('hra_finish', array('guid'=>$guid, 'hra_id'=>$page[1]));
             break;
     }
 

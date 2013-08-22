@@ -78,19 +78,19 @@ if($error!=''){
         'weight'=>$weight,
         'height'=>$height
     );
-    $genderuuid = ($gender=='M')? '52134584-5c74-4034-94d5-24bcac116443' : '52134584-c1bc-40a6-9dd8-24bcac116443';
+    $genderuuid = ($gender=='male')? '52134584-5c74-4034-94d5-24bcac116443' : '52134584-c1bc-40a6-9dd8-24bcac116443';
     H2hra::updateBasicInfo($guid, $paraArray);
     $answerArray = array(
                         'hra_id'=>$hra_id,
                         "answers[age]"=>$age,
-                        "answers['gender']"=>$genderuuid,
-        "answers['ethnicity']"=>$ethnicity,
-        "answers['weight']"=>$weight,
-        "answers['height']"=>$height
+                        "answers[gender]"=>$genderuuid,
+        "answers[ethnicity]"=>$ethnicity,
+        "answers[weight]"=>$weight,
+        "answers[height]"=>$height
                     );
     $result = H2hra::postAnswers($token, $answerArray);
 
-    $forwardURL = elgg_get_site_url().'hra/life';
+    $forwardURL = elgg_get_site_url().'hra/life/'.$hra_id;
 }
 
 forward($forwardURL);

@@ -1,4 +1,15 @@
 
+CREATE TABLE `elgg_imhomedev_hra_answers` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `qid` int(11) DEFAULT NULL,
+  `type` varchar(45) DEFAULT NULL,
+  `desc` varchar(45) DEFAULT NULL,
+  `uuid` varchar(45) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=latin1;
+
+
+
 CREATE TABLE `elgg_imhomedev_hra_basicinfo` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `shn_userid` int(11) NOT NULL,
@@ -21,6 +32,18 @@ CREATE TABLE `elgg_imhomedev_hra_basicinfo` (
 ) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=latin1;
 
 
+CREATE TABLE `elgg_imhomedev_hra_questions` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `qid` int(11) DEFAULT NULL,
+  `category` varchar(45) DEFAULT NULL,
+  `name` varchar(200) DEFAULT NULL,
+  `desc` varchar(200) DEFAULT NULL,
+  `type` tinyint(4) DEFAULT '0' COMMENT '0 - main\\n1 - sub == need main\\n',
+  `main` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=latin1;
+
+
 CREATE TABLE `elgg_imhomedev_hra_stat` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `guid` int(11) DEFAULT NULL,
@@ -28,28 +51,15 @@ CREATE TABLE `elgg_imhomedev_hra_stat` (
   `date` varchar(45) DEFAULT NULL,
   `score` varchar(45) DEFAULT NULL,
   `done` tinyint(4) DEFAULT '0',
+  `bmi` int(11) DEFAULT NULL,
+  `bmr` varchar(45) DEFAULT NULL,
+  `diet_plan` varchar(45) DEFAULT NULL,
+  `calories_goal` int(11) DEFAULT NULL,
+  `strength_level` varchar(45) DEFAULT NULL,
+  `fitness_classification_level` varchar(45) DEFAULT NULL,
+  `answerlists` varchar(300) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 
-
-
-CREATE TABLE `elgg_imhomedev_hra_answer` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `qid` int(11) DEFAULT NULL,
-  `type` varchar(45) DEFAULT NULL,
-  `desc` varchar(45) DEFAULT NULL,
-  `uuid` varchar(45) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1
-
-
-
-CREATE TABLE `elgg_imhomedev_hra_questions` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `qid` varchar(45) DEFAULT NULL,
-  `name` varchar(45) DEFAULT NULL,
-  `desc` varchar(45) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1
 
 

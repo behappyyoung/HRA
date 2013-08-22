@@ -106,8 +106,8 @@ if($retry){
                     </td>
                     <td class="input">
 
-                        <input type="radio" name="gender" value="F"  class="checkbox"  <?=($gender=='F')? 'checked=checked ':''?> > Female
-                        <input type="radio" name="gender" value="M"  class="checkbox" <?=($gender=='M')? 'checked=checked ':''?> > Male
+                        <input type="radio" name="gender" value="female"  class="checkbox"  <?=($gender=='female')? 'checked=checked ':''?> > Female
+                        <input type="radio" name="gender" value="male"  class="checkbox" <?=($gender=='male')? 'checked=checked ':''?> > Male
                     </td>
 
                 </tr>
