@@ -28,9 +28,9 @@ class HRA {
 
     protected function saveInfo($data, $table){
         if($data=='') return false;
-        $keys = implode(',',array_keys($data));
+        $keys = implode('`,`',array_keys($data));
         $values =  implode('","',array_values($data));
-        $query = 'INSERT INTO '. elgg_get_config("dbprefix") . $table. ' ( ' . $keys.' ) VALUES (" '. $values.'")';
+        $query = 'INSERT INTO '. elgg_get_config("dbprefix") . $table. ' (`' . $keys.'` ) VALUES ("'. $values.'")';
         $result = insert_data($query);
         return $result;
     }
@@ -58,5 +58,18 @@ class HRA {
         $result = update_data($query);
         return $result;
     }
+
+    protected function updateQuestion($qid, $data, $table){
+        if(($data=='')||($qid=='')) return false;
+        $subquery = '';
+        foreach($data as $key => $value){
+            $subquery .= '`'.$key.'` = "'.$value.'",';
+        }
+        $subquery = substr($subquery, 0, -1);
+        $query = 'UPDATE ' . elgg_get_config("dbprefix") . $table. ' SET  '. $subquery .' WHERE qid = '.$qid ;
+        $result = update_data($query);
+        return $result;
+    }
+
 
 }

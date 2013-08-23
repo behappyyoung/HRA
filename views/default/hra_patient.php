@@ -8,7 +8,7 @@
 
 
 <?php
-$debug = ($_SERVER['SERVER_NAME']=='localhost')?true: false;
+$debug = ($_SERVER['SERVER_NAME']=='1127.0.0.1')?true: false;
 
 
 

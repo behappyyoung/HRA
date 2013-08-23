@@ -26,7 +26,9 @@ define('HRA_ANSWER_TABLE', 'hra_answers');
 
 
 class H2hra extends HRA{
-
+    public static function getAdminSession(){
+        return H2hra::getSession('young', 'young');
+    }
     public static function getSession($username, $password){
         $createURL = HRA_CREATE_SESSION;
         $para = array('username'=>$username,
@@ -128,11 +130,9 @@ class H2hra extends HRA{
     }
 
     public static function getHraUser($guid){
-
        $query = 'SELECT *  FROM ' . elgg_get_config("dbprefix") . HRA_INFO_TABLE.' WHERE guid ='.$guid;
         $hrauserinfo = get_data($query);
         return $hrauserinfo[0];
-
     }
 
     public static function getHraStat($guid='', $orderby=''){
@@ -152,8 +152,41 @@ class H2hra extends HRA{
         return $hrainfo;
     }
 
+    public static function getLocalQuestions(){
+        $query = 'SELECT *  FROM ' . elgg_get_config("dbprefix") . HRA_QUESTION_TABLE;
+        $result = get_data($query);
+            foreach($result as $questions){
+                $localquestion[$questions->qid] = array(
+                    'category' => $questions->category,
+                    'name' => $questions->name,
+                    'desc' => $questions->desc,
+                    'type' => $questions->type,
+                    'main' => $questions->main,
+                );
+            }
 
+        return $localquestion;
+    }
 
+    public static function getLocalQuestionIDs(){
+        $query = 'SELECT qid  FROM ' . elgg_get_config("dbprefix") . HRA_QUESTION_TABLE;
+        $result = get_data($query);
+        foreach($result as $questions){
+            $qid[] = $questions->qid;
+        }
+
+        return $qid;
+    }
+
+    public static function getLocalAnswerIDs(){
+        $query = 'SELECT aid  FROM ' . elgg_get_config("dbprefix") . HRA_ANSWER_TABLE;
+        $result = get_data($query);
+        foreach($result as $answers){
+            $aid[] = $answers->aid;
+        }
+
+        return $aid;
+    }
 
     public static function getToken($guid){
 
@@ -178,6 +211,12 @@ class H2hra extends HRA{
         $para = array('guid'=>$guid, 'hra_id'=>$hra_id, 'date'=>date('m-d-Y'));
         return HRA::saveInfo($para, HRA_STAT_TABLE);
     }
+    public static function saveQuestion($para){
+        return HRA::saveInfo($para, HRA_QUESTION_TABLE);
+    }
+    public static function saveAnswer($para){
+        return HRA::saveInfo($para, HRA_ANSWER_TABLE);
+    }
 
     public static function updateBasicInfo($guid, $para){
         return HRA::updateInfo($guid, $para, HRA_INFO_TABLE);
@@ -198,5 +237,9 @@ class H2hra extends HRA{
         $query = 'SELECT *  FROM ' . elgg_get_config("dbprefix") . HRA_ANSWER_TABLE.' WHERE qid = "'.$qid.'"'.$orderby;
         $answers = (array) get_data($query);
         return $answers;
+    }
+
+    public static function updateDatabase($table, $para){
+
     }
 }
