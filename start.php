@@ -10,10 +10,11 @@ function hra_init() {
     $item = new ElggMenuItem('hra', elgg_echo('HRA'), 'hra/');
     elgg_register_menu_item('site', $item);
 
-    $action_base_path = elgg_get_plugins_path() . 'hra/actions/patient';
-    elgg_register_action("hra/save_basic", "$action_base_path/save_basic.php");
-    elgg_register_action("hra/save_life", "$action_base_path/save_life.php");
-    elgg_register_action("hra/save_finish", "$action_base_path/save_finish.php");
+    $action_base_path = elgg_get_plugins_path() . 'hra/actions';
+    elgg_register_action("hra/save_basic", "$action_base_path/patient/save_basic.php");
+    elgg_register_action("hra/save_life", "$action_base_path/patient/save_life.php");
+    elgg_register_action("hra/save_finish", "$action_base_path/patient/save_finish.php");
+    elgg_register_action("hra/patch_questions", "$action_base_path/admin/patch_questions.php");
 
 
 }

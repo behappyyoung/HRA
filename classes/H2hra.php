@@ -212,10 +212,20 @@ class H2hra extends HRA{
         return HRA::saveInfo($para, HRA_STAT_TABLE);
     }
     public static function saveQuestion($para){
-        return HRA::saveInfo($para, HRA_QUESTION_TABLE);
+        $result= HRA::saveInfo($para, HRA_QUESTION_TABLE);
+        if($result){
+            return $result;
+        }else{
+            throw new Exception('DB input Error');
+        }
     }
     public static function saveAnswer($para){
-        return HRA::saveInfo($para, HRA_ANSWER_TABLE);
+        $result= HRA::saveInfo($para, HRA_ANSWER_TABLE);
+        if($result){
+            return $result;
+        }else{
+            throw new Exception('DB input Error');
+        }
     }
 
     public static function updateBasicInfo($guid, $para){
