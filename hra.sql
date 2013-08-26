@@ -1,7 +1,5 @@
 
-
-DROP TABLE IF EXISTS  `imhomedev_0819_hra_basicinfo`  ;
-CREATE TABLE `imhomedev_0819_hra_basicinfo` (
+CREATE TABLE `elgg_imhomedev_hra_basicinfo` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `shn_userid` int(11) NOT NULL,
   `guid` int(11) NOT NULL,
@@ -17,27 +15,15 @@ CREATE TABLE `imhomedev_0819_hra_basicinfo` (
   `height` varchar(6) DEFAULT NULL,
   `weight` varchar(6) DEFAULT NULL,
   `ethnicity` varchar(10) DEFAULT NULL,
+  `waist` varchar(10) DEFAULT NULL,
+  `livingarea` varchar(10) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`),
   UNIQUE KEY `guid_UNIQUE` (`guid`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=latin1;
-
-DROP TABLE IF EXISTS  `imhomedev_0819_hra_questions`  ;
-
-CREATE TABLE `imhomedev_0819_hra_questions` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `qid` int(11) DEFAULT NULL,
-  `category` varchar(45) DEFAULT NULL,
-  `name` varchar(200) DEFAULT NULL,
-  `desc` varchar(200) DEFAULT NULL,
-  `type` tinyint(4) DEFAULT '0' COMMENT '0 - both gender / 1 - only male / 2- only female',
-  `main` int(11) DEFAULT NULL COMMENT '0 - main\\\\n1 - sub == need main\\\\n',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=37 DEFAULT CHARSET=latin1
+) ENGINE=InnoDB AUTO_INCREMENT DEFAULT CHARSET=latin1;
 
 
-
-CREATE TABLE `imhomedev_0819_hra_answers` (
+CREATE TABLE `elgg_imhomedev_hra_answers` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `qid` int(11) DEFAULT NULL,
   `type` varchar(45) DEFAULT NULL,
@@ -46,12 +32,23 @@ CREATE TABLE `imhomedev_0819_hra_answers` (
   `score` varchar(45) DEFAULT NULL,
   `aid` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=188 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT DEFAULT CHARSET=latin1;
 
 
 
-DROP TABLE IF EXISTS  `imhomedev_0819_hra_stat`  ;
-CREATE TABLE `imhomedev_0819_hra_stat` (
+CREATE TABLE `elgg_imhomedev_hra_questions` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `qid` int(11) DEFAULT NULL,
+  `category` varchar(45) DEFAULT NULL,
+  `name` varchar(200) DEFAULT NULL,
+  `desc` varchar(200) DEFAULT NULL,
+  `type` tinyint(4) DEFAULT '0' COMMENT '0 - both gender / 1 - only male / 2- only female',
+  `main` int(11) DEFAULT NULL COMMENT '0 - main\\\\n1 - sub == need main\\\\n',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT DEFAULT CHARSET=latin1;
+
+
+CREATE TABLE `elgg_imhomedev_hra_stat` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `guid` int(11) DEFAULT NULL,
   `hra_id` int(11) DEFAULT NULL,
@@ -68,7 +65,5 @@ CREATE TABLE `imhomedev_0819_hra_stat` (
   `aerobic_capacity` varchar(45) DEFAULT NULL,
   `answerlists` varchar(300) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
-
-
+) ENGINE=InnoDB AUTO_INCREMENT DEFAULT CHARSET=latin1;
 
