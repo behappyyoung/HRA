@@ -19,7 +19,7 @@ echo $role.'<br />';
     }
     function patchQuestions(){
         jQuery.ajax({
-            url: '<?=elgg_add_action_tokens_to_url("hra/patch_questions")?>',
+            url: '<?=elgg_add_action_tokens_to_url("action/hra/patch_questions")?>',
             type : "json",
             success : function(data){
                     alert(data);
@@ -29,7 +29,7 @@ echo $role.'<br />';
     }
 </script>
 
-<button class="'elgg-submit-button" onclick="showQuestions();">Update HRA Questions </button>  <br />
+<!-- <button class="'elgg-submit-button" onclick="showQuestions();">Update HRA Questions </button>  <br /> -->
 <button class="'elgg-submit-button" onclick="patchQuestions();">Patch HRA Questions </button>  <br />
 <br />
 HRA Status <br />

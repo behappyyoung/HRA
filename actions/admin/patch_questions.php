@@ -1,12 +1,12 @@
 <?php
+
 $debug = ($_SERVER['SERVER_NAME']=='1127.0.0.1')?true: false;
 $user_role = roles_get_role();
 $role= $user_role->get("title");
 $hrainfo = (array) H2hra::getHraStatMember();
+echo $role;
 
-//var_dump($hrainfo);
 $token = H2hra::getAdminSession();
-
 $questions =  H2hra::getQuestions($token);
 
 foreach($questions as $sections){
@@ -67,13 +67,11 @@ $qid = H2hra::getLocalQuestionIDs();
 $aid = H2hra::getLocalAnswerIDs();
 
 $result = 'OK';
-echo $result;
-exit();
 foreach($myquestion as $id => $questionArray){
     if(in_array($id, $qid)){  //exists => update
             echo $id.'update <br />';
     }else{  // insert
-        echo $id.'insert <br />';
+        //echo $id.'insert <br />';
         try{
             H2hra::saveQuestion($questionArray);
         }catch (Exception $e){
@@ -88,7 +86,7 @@ foreach($myanswer as $id => $answerArray){
     if(in_array($id, $aid)){  //exists => update
         echo $id.'update <br />';
     }else{  // insert
-        echo $id.'insert <br />';
+       // echo $id.'insert <br />';
         try{
             H2hra::saveAnswer($answerArray);
         }catch (Exception $e){
@@ -98,4 +96,5 @@ foreach($myanswer as $id => $answerArray){
 }
 
 echo $result;
+exit();
 ?>
