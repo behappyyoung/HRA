@@ -70,6 +70,16 @@ class HRA {
         $result = update_data($query);
         return $result;
     }
-
+    protected function updateAnswer($aid, $data, $table){
+        if(($data=='')||($aid=='')) return false;
+        $subquery = '';
+        foreach($data as $key => $value){
+            $subquery .= '`'.$key.'` = "'.$value.'",';
+        }
+        $subquery = substr($subquery, 0, -1);
+        $query = 'UPDATE ' . elgg_get_config("dbprefix") . $table. ' SET  '. $subquery .' WHERE aid = '.$aid ;
+        $result = update_data($query);
+        return $result;
+    }
 
 }

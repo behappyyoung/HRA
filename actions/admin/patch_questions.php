@@ -20,7 +20,7 @@ foreach($questions as $sections){
             'name' =>    $QuestionnaireSection['name'],
             'desc' =>    $QuestionnaireSection['name'],
             'type' => '0',
-            'main' => '0'
+            'main' => $QuestionnaireSection['id']
         );
         foreach($Questionnaire as $question){
             switch($question->gender){
@@ -69,7 +69,12 @@ $aid = H2hra::getLocalAnswerIDs();
 $result = 'OK';
 foreach($myquestion as $id => $questionArray){
     if(in_array($id, $qid)){  //exists => update
-            echo $id.'update <br />';
+        //    echo $id.'update <br />';
+        try{
+            H2hra::updateH2Question($id, $questionArray);
+        }catch (Exception $e){
+            $result .= 'Error : '. $e->getMessage();
+        }
     }else{  // insert
         //echo $id.'insert <br />';
         try{
@@ -84,7 +89,11 @@ foreach($myquestion as $id => $questionArray){
 
 foreach($myanswer as $id => $answerArray){
     if(in_array($id, $aid)){  //exists => update
-        echo $id.'update <br />';
+        try{
+            H2hra::updateH2Answer($id, $answerArray);
+        }catch (Exception $e){
+            $result .= 'Error : '. $e->getMessage();
+        }
     }else{  // insert
        // echo $id.'insert <br />';
         try{

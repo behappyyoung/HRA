@@ -23,9 +23,11 @@ $hrauserinfo =(array) H2hra::getHraUser($guid);
 if(empty($hrauserinfo)){
     echo H2hra::createAccount($patientinfo['guid'], $patientinfo['username'], $patientinfo['firstname'],
         $patientinfo['lastname'], $patientinfo['gender'], $patientinfo['email']);
+    forward(elgg_get_site_url().'hra/');
 }elseif($hrauserinfo['token']==''){
     $token = H2hra::getSession($hrauserinfo['username'], $hrauserinfo['password']);
     echo H2hra::saveToken($guid, $token);
+    forward(elgg_get_site_url().'hra/');
 }else{
     echo '<a href="'.elgg_get_site_url().'hra/basic/">Take New Test</a> <br />';
     $hrainfo = (array) H2hra::getHraStat($guid);

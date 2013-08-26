@@ -219,6 +219,16 @@ class H2hra extends HRA{
             throw new Exception('DB input Error');
         }
     }
+
+    public static function updateH2Question($qid, $para){
+        $result= HRA::updateQuestion($qid, $para, HRA_QUESTION_TABLE);
+        if($result){
+            return $result;
+        }else{
+            throw new Exception('DB input Error');
+        }
+    }
+
     public static function saveAnswer($para){
         $result= HRA::saveInfo($para, HRA_ANSWER_TABLE);
         if($result){
@@ -228,6 +238,17 @@ class H2hra extends HRA{
         }
     }
 
+
+    public static function updateH2Answer($aid, $para){
+        $result= HRA::updateAnswer($aid, $para, HRA_ANSWER_TABLE);
+        if($result){
+            return $result;
+        }else{
+            throw new Exception('DB input Error');
+        }
+    }
+
+
     public static function updateBasicInfo($guid, $para){
         return HRA::updateInfo($guid, $para, HRA_INFO_TABLE);
     }
@@ -236,12 +257,27 @@ class H2hra extends HRA{
         return HRA::updateHra($guid, $hra_id, $para, HRA_STAT_TABLE);
     }
 
+    public static function getH2Questions($cat, $orderby=''){
+        $orderby = ($orderby=='') ? ' ORDER BY qid ' : ' ORDER BY ' .$orderby ;
+        $query = 'SELECT *  FROM ' . elgg_get_config("dbprefix") . HRA_QUESTION_TABLE.' WHERE category = "'.$cat.'"'.$orderby;
+        $questions = (array) get_data($query);
+        return $questions;
+    }
+
+    public static function getH2Answers($qid, $orderby=''){
+        $orderby = ($orderby=='') ? ' ORDER BY id ' : ' ORDER BY ' .$orderby ;
+        $query = 'SELECT *  FROM ' . elgg_get_config("dbprefix") . HRA_ANSWER_TABLE.' WHERE qid = "'.$qid.'"'.$orderby;
+        $answers = (array) get_data($query);
+        return $answers;
+    }
+// temp
     public static function getBasicQuestions($cat, $orderby=''){
         $orderby = ($orderby=='') ? ' ORDER BY qid ' : ' ORDER BY ' .$orderby ;
         $query = 'SELECT *  FROM ' . elgg_get_config("dbprefix") . HRA_QUESTION_TABLE.' WHERE category = "'.$cat.'"'.$orderby;
         $questions = (array) get_data($query);
         return $questions;
     }
+
     public static function getBasicAnswers($qid, $orderby=''){
         $orderby = ($orderby=='') ? ' ORDER BY id ' : ' ORDER BY ' .$orderby ;
         $query = 'SELECT *  FROM ' . elgg_get_config("dbprefix") . HRA_ANSWER_TABLE.' WHERE qid = "'.$qid.'"'.$orderby;

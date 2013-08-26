@@ -81,7 +81,7 @@ foreach($questions as $question){
 
             </table>
                 <div class="buttons">
-                    <button class="cancel" onclick="" > Cancel </button>
+                    <a href="<?=elgg_get_site_url()?>hra/"> Cancel </a>
                     <button  class="save" > Save & Continue </button>
                 </div>
             </div>

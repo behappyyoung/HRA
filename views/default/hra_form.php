@@ -1,24 +1,33 @@
 <?php
 $guid = elgg_extract('guid', $vars, '');
 $hra_id = elgg_extract('hra_id', $vars, '');
-$form = elgg_extract('form', $vars, '');
+$current_survey = elgg_extract('current_survey', $vars, '');
+$current_survey = ($current_survey=='')? '1' : $current_survey;
+
+
+if($_SERVER['SERVER_NAME']=='1127.0.0.1') var_dump($_REQUEST);
 
 $userinfo = (array) H2hra::getHraUser($guid);
 $token = $userinfo['token'];
 
-$myAnswers = H2hra::getAnswers($token,$hra_id);
 
 //  need to update to real API
+$surveylist = array(1 => 'Eating & Lifestyle Habits',
+                    2 => 'Screening for Healthy Living/ Cancer Preventa',
+                    3 => 'Fitness Level Questionnaire',
+                    4 => 'Program Goals',
+                    5 => 'Screening for Healthy Heart Diet Plan',
+                    6 => 'Screening for Diabetic Health Program',
+                    7 => 'Screening for Healthy Joint Diet');
 
-
-$questions =  H2hra::getBasicQuestions($form, 'qid');
+$questions =  H2hra::getH2Questions($surveylist[$current_survey], 'qid');
 
 
 foreach($questions as $question){
-    if($question->type==0){                         //main
+    if($question->main==$question->qid){                         //main
         $subtitle = $question->name;
-    }elseif($question->type ==1){                            //sub - real questions
-        $answers =  H2hra::getBasicAnswers($question->qid);
+    }else{                            //sub - real questions
+        $answers =  H2hra::getH2Answers($question->qid);
         $cq[$question->qid] = array('name' => $question->name,
             'desc' => $question->desc,
             'answerArray'=> $answers);
@@ -52,10 +61,11 @@ foreach($questions as $question){
 </style>
 
 <form class="form" id="patient-hra-form" title="Patient hra"  method="post"
-      action="<?php echo elgg_add_action_tokens_to_url("/action/hra/save_life"); ?>">
+      action="<?php echo elgg_add_action_tokens_to_url("/action/hra/save_form"); ?>">
     <input type="hidden" name="guid" value="<?=$guid?>" />
     <input type="hidden" name="token" value="<?=$token?>" />
     <input type="hidden" name="hra_id" value="<?=$hra_id?>" />
+    <input type="hidden" name="current_survey" value="<?=$current_survey?>" />
     <div class="form-tabs" id="form-tabs"> </div>
     <div class="subtitle" > <?=$subtitle?> </div>
     <div id="tabs-basic" class="basic-form">
@@ -82,7 +92,7 @@ foreach($questions as $question){
 
         </table>
         <div class="buttons">
-            <button class="cancel" onclick="" > Cancel </button>
+            <a href="<?=elgg_get_site_url()?>hra/"> Cancel </a>
             <button  class="save" > Save & Continue </button>
         </div>
     </div>

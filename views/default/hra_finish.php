@@ -11,7 +11,7 @@ $myResult = H2hra::getResult($token,$hra_id);
 
 $myAnswers = H2hra::getAnswers($token,$hra_id);
 
-if($debug)var_dump($myAnswers);
+if($_SERVER['SERVER_NAME']=='1127.0.0.1') var_dump($myAnswers);
 $serialAnswers = serialize($myAnswers);
 
 //save result

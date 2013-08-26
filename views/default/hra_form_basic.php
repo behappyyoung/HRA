@@ -10,7 +10,9 @@ if($retry){
     $gender = $_GET['gender'];
     $ethnicity = $_GET["ethnicity"];
     $weight = $_GET["weight"];
+    $waist = $_GET["waist"];
     $height = $_GET["height"];
+    $livingarea = $_GET["livingarea"];
 
 }else{
 
@@ -53,6 +55,8 @@ if($retry){
     $feet = $height[0];
     $inches = $height[1];
     $weight = $userinfo["height"];
+    $waist = $userinfo["waist"];
+    $livingarea = $userinfo["livingarea"];
 
 
 }
@@ -131,7 +135,16 @@ if($retry){
                   </tr>
                   <tr>
                       <td  class="label">
-                          <span class="number"> 5 </span> <span> Ethnicity </span>
+                          <span class="number"> 5 </span> <span> Waist Line Circumference (in inches) </span>
+                      </td>
+                      <td class="input">
+
+                          <input type="text" class="smallinput" name="waist" value="<?=$waist?>" />(inches)
+                      </td>
+                  </tr>
+                  <tr>
+                      <td  class="label">
+                          <span class="number"> 6 </span> <span> Ethnicity </span>
                       </td>
                       <td class="input">
                           <?php echo elgg_view("shn/input/races",array(
@@ -142,6 +155,19 @@ if($retry){
                           ));
                           ?>
 
+                      </td>
+                  </tr>
+                  <tr>
+                      <td  class="label">
+                          <span class="number"> 7 </span> <span> What type of area do you live in?</span>
+                      </td>
+                      <td class="input">
+
+                          <select name="livingarea">
+                              <option value="city" <?php if($livingarea=='city') echo 'checked=checked';?> >Urban City</option>
+                              <option value="mountain"  <?php if($livingarea=='mountain') echo 'checked=checked';?>  >Mountainous region</option>
+                              <option value="suburbs"  <?php if($livingarea=='suburbs') echo 'checked=checked';?> >Suburbs</option>
+                          </select>
                       </td>
                   </tr>
 
