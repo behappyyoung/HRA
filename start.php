@@ -7,7 +7,7 @@ elgg_register_event_handler('init','system','hra_init');
 function hra_init() {
 
     elgg_register_page_handler('hra', 'hra_page_handler');
-    $item = new ElggMenuItem('hra', elgg_echo('HRA'), 'hra/');
+    $item = new ElggMenuItem('hra', elgg_echo('My Track'), 'hra/');
     elgg_register_menu_item('site', $item);
 
     $action_base_path = elgg_get_plugins_path() . 'hra/actions';

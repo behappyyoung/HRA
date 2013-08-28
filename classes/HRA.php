@@ -30,7 +30,7 @@ class HRA {
         if($data=='') return false;
         $keys = implode('`,`',array_keys($data));
         $values =  implode('","',array_values($data));
-        $query = 'INSERT INTO '. elgg_get_config("dbprefix") . $table. ' (`' . $keys.'` ) VALUES ("'. $values.'")';
+        $query = 'INSERT INTO ' . $table. ' (`' . $keys.'` ) VALUES ("'. $values.'")';
         $result = insert_data($query);
         return $result;
     }
@@ -42,7 +42,7 @@ class HRA {
             $subquery .= '`'.$key.'` = "'.$value.'",';
         }
         $subquery = substr($subquery, 0, -1);
-        $query = 'UPDATE ' . elgg_get_config("dbprefix") . $table. ' SET  '. $subquery .' WHERE elgg_user_guid = '.$guid;
+        $query = 'UPDATE '  . $table. ' SET  '. $subquery .' WHERE elgg_user_guid = '.$guid;
         $result = update_data($query);
         return $result;
     }
@@ -54,7 +54,7 @@ class HRA {
             $subquery .= '`'.$key.'` = "'.$value.'",';
         }
         $subquery = substr($subquery, 0, -1);
-        $query = 'UPDATE ' . elgg_get_config("dbprefix") . $table. ' SET  '. $subquery .' WHERE elgg_user_guid = '.$guid;
+        $query = 'UPDATE '  . $table. ' SET  '. $subquery .' WHERE elgg_user_guid = '.$guid;
         $result = update_data($query);
         return $result;
     }
@@ -66,7 +66,7 @@ class HRA {
             $subquery .= '`'.$key.'` = "'.$value.'",';
         }
         $subquery = substr($subquery, 0, -1);
-        $query = 'UPDATE ' . elgg_get_config("dbprefix") . $table. ' SET  '. $subquery .' WHERE shn_user_id = '.$user_id .' AND hra_id ='.$hraid;
+        $query = 'UPDATE '  . $table. ' SET  '. $subquery .' WHERE shn_user_id = '.$user_id .' AND hra_id ='.$hraid;
         $result = update_data($query);
         return $result;
     }
@@ -74,7 +74,7 @@ class HRA {
     protected function getStat($user_id='', $orderby='', $table){
         $subquery = ($user_id=='') ? '' : ' WHERE shn_user_id = ' .$user_id ;
         $orderby = ($orderby=='') ? '' : ' ORDER BY ' .$orderby ;
-        $query = 'SELECT *  FROM ' . elgg_get_config("dbprefix") . $table.$subquery.$orderby;
+        $query = 'SELECT *  FROM '  . $table.$subquery.$orderby;
         $result = get_data($query);
         return $result;
     }
@@ -89,7 +89,7 @@ class HRA {
             $subquery .= '`'.$key.'` = "'.$value.'",';
         }
         $subquery = substr($subquery, 0, -1);
-        $query = 'UPDATE ' . elgg_get_config("dbprefix") . $table. ' SET  '. $subquery .' WHERE shn_user_id = '.$user_id .' AND shn_hra_id ='.$hraid;
+        $query = 'UPDATE '  . $table. ' SET  '. $subquery .' WHERE shn_user_id = '.$user_id .' AND shn_hra_id ='.$hraid;
         $result = update_data($query);
         return $result;
     }
@@ -101,7 +101,7 @@ class HRA {
             $subquery .= '`'.$key.'` = "'.$value.'",';
         }
         $subquery = substr($subquery, 0, -1);
-        $query = 'UPDATE ' . elgg_get_config("dbprefix") . $table. ' SET  '. $subquery .' WHERE h2_question_id = '.$qid ;
+        $query = 'UPDATE '  . $table. ' SET  '. $subquery .' WHERE h2_question_id = '.$qid ;
         $result = update_data($query);
         return $result;
     }
@@ -112,7 +112,7 @@ class HRA {
             $subquery .= '`'.$key.'` = "'.$value.'",';
         }
         $subquery = substr($subquery, 0, -1);
-        $query = 'UPDATE ' . elgg_get_config("dbprefix") . $table. ' SET  '. $subquery .' WHERE h2_answer_id = '.$aid ;
+        $query = 'UPDATE '  . $table. ' SET  '. $subquery .' WHERE h2_answer_id = '.$aid ;
         $result = update_data($query);
         return $result;
     }

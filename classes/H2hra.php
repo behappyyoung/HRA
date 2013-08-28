@@ -19,11 +19,6 @@ define('HRA_GET_QUESTIONS', HRA_BASERUL.'/hra/questions/');
 define('HRA_POST_ANSWERS', HRA_BASERUL.'/hra/update/');
 define('HRA_RESULT', HRA_BASERUL.'/hra/result/');
 
-define('HRA_INFO_TABLE', 'hra_basicinfo');
-define('HRA_STAT_TABLE', 'hra_stat');
-define('HRA_QUESTION_TABLE', 'hra_questions');
-define('HRA_ANSWER_TABLE', 'hra_answers');
-
 
 define('HRA_TABLE', 'shn_hras');
 define('SHN_USER_TABLE', 'shn_users');
@@ -128,18 +123,17 @@ class H2hra extends HRA{
 
         $output = json_decode(HRA::getJsonData($createURL, $para, true), true);
 
-        var_dump( $output);
+        $dbpara = array('elgg_user_guid'=>$guid,
+            'first_name' =>$firstname,
+            'last_name'=> $lastname,
+            'gender' => $gender,
+            'email' => $email,
+            'shn_client_id'=>$client_id,
+            'h2_username'=>$username,
+            'h2_password'=>$password);
+
         //if($output['meta']['status']=='OK'){
         if($output==null){
-            $dbpara = array('elgg_user_guid'=>$guid,
-                'first_name' =>$firstname,
-                'last_name'=> $lastname,
-                'gender' => $gender,
-                'email' => $email,
-                'shn_client_id'=>$client_id,
-                'h2_username'=>$username,
-                'h2_password'=>$password);
-
             try{
                 $result = HRA::saveInfo($dbpara, SHN_USER_TABLE);  // $result has User ID... need replace guid with user ID later
                 $token = H2hra::getSession($username, $password);
@@ -148,9 +142,10 @@ class H2hra extends HRA{
             }catch (Exception $e) {
                 return 'DB Error : '. $e->getMessage();
             }
-        }elseif($output['meta']['feedback'][0]['message'][0]=='email already exists'){
+        }elseif(($output['meta']['feedback'][0]['message'][0]=='email already exists')||($output['meta']['feedback'][0]['message'][0]=='username already exists')){
+            $result = HRA::saveInfo($dbpara, SHN_USER_TABLE);   // probably only for testing
             $token = H2hra::getSession($username, $password);
-            saveToken($guid, $token);
+            H2hra::saveToken($guid, $token);
             return 'OK';
         }else{
             return  $output['meta']['status'].'--'.$output['meta']['feedback'][0]['message'][0];
@@ -160,13 +155,13 @@ class H2hra extends HRA{
 
     }
     public  static function getUserId($guid){
-        $query = 'SELECT id  FROM ' . elgg_get_config("dbprefix") . SHN_USER_TABLE.' WHERE elgg_user_guid ='.$guid;
+        $query = 'SELECT id  FROM '  . SHN_USER_TABLE.' WHERE elgg_user_guid ='.$guid;
         $hrauserinfo = get_data($query);
         return $hrauserinfo[0]->id;
     }
 
     public static function getHraUser($guid){
-       $query = 'SELECT *  FROM ' . elgg_get_config("dbprefix") . SHN_USER_TABLE.' WHERE elgg_user_guid ='.$guid;
+       $query = 'SELECT *  FROM '  . SHN_USER_TABLE.' WHERE elgg_user_guid ='.$guid;
         $hrauserinfo = get_data($query);
         return $hrauserinfo[0];
     }
@@ -174,7 +169,7 @@ class H2hra extends HRA{
     public static function getHraStat($guid='', $orderby=''){
         $subquery = ($guid=='') ? '' : ' WHERE guid = ' .$guid ;
         $orderby = ($orderby=='') ? '' : ' ORDER BY ' .$orderby ;
-        $query = 'SELECT *  FROM ' . elgg_get_config("dbprefix") . STAT_TABLE.$subquery.$orderby;
+        $query = 'SELECT *  FROM '  . STAT_TABLE.$subquery.$orderby;
         $hrainfo = get_data($query);
         return $hrainfo;
     }
@@ -184,15 +179,15 @@ class H2hra extends HRA{
     public static function getHraStatMember($guids='', $orderby=''){
         $subquery = ($guid=='') ? '' : ' WHERE guid in ( ' .$guids.') ' ;
         $orderby = ($orderby=='') ? '' : ' ORDER BY ' .$orderby ;
-        $query = 'SELECT S.*, I.first_name, I.last_name  FROM ' . elgg_get_config("dbprefix") . STAT_TABLE.' S JOIN '
-            . elgg_get_config("dbprefix") .HRA_INFO_TABLE.' I ON S.guid = I.guid '.$subquery. $orderby;
+        $query = 'SELECT S.*, I.first_name, I.last_name  FROM '  . STAT_TABLE.' S JOIN '
+             .HRA_INFO_TABLE.' I ON S.guid = I.guid '.$subquery. $orderby;
         $hrainfo = get_data($query);
         return $hrainfo;
     }
 
     public static function getH2HraId($guid){
         $user_id = H2hra::getUserId($guid);
-        $query = 'select h.h2_hra_id from '.elgg_get_config("dbprefix") . HRA_TABLE.' h WHERE id = (select shn_hra_id from '.elgg_get_config("dbprefix") . STAT_TABLE.' s WHERE shn_user_id= '.$user_id.')';
+        $query = 'select h.h2_hra_id from '. HRA_TABLE.' h WHERE id = (select shn_hra_id from ' . STAT_TABLE.' s WHERE shn_user_id= '.$user_id.')';
         $h2_hra_id = get_data($query);
         return $h2_hra_id;
     }
@@ -209,7 +204,7 @@ class H2hra extends HRA{
     public static function getHraStat($user_id='', $orderby=''){
         $subquery = ($user_id=='') ? '' : ' WHERE shn_user_id = ' .$user_id ;
         $orderby = ($orderby=='') ? '' : ' ORDER BY ' .$orderby ;
-        $query = 'SELECT *  FROM ' . elgg_get_config("dbprefix") . STAT_TABLE.$subquery.$orderby;
+        $query = 'SELECT *  FROM '  . STAT_TABLE.$subquery.$orderby;
         $hrainfo = get_data($query);
         return $hrainfo;
     }
@@ -218,14 +213,14 @@ class H2hra extends HRA{
     public static function getHraStatMembers($user_ids='', $orderby=''){
         $subquery = ($user_ids=='') ? '' : ' WHERE shn_user_id in ( ' .implode(',', $user_ids).') ' ;
         $orderby = ($orderby=='') ? '' : ' ORDER BY ' .$orderby ;
-        $query = 'SELECT *  FROM ' . elgg_get_config("dbprefix") . STAT_TABLE.$subquery.$orderby;
+        $query = 'SELECT *  FROM '  . STAT_TABLE.$subquery.$orderby;
         $hrainfo = get_data($query);
         return $hrainfo;
     }
 
 
     public static function getLocalQuestions(){
-        $query = 'SELECT *  FROM ' . elgg_get_config("dbprefix") . QUESTION_TABLE;
+        $query = 'SELECT *  FROM '  . QUESTION_TABLE;
         $result = get_data($query);
             foreach($result as $questions){
                 $localquestion[$questions->qid] = array(
@@ -241,7 +236,7 @@ class H2hra extends HRA{
     }
 
     public static function getLocalQuestionIDs(){
-        $query = 'SELECT h2_question_id  FROM ' . elgg_get_config("dbprefix") . QUESTION_TABLE;
+        $query = 'SELECT h2_question_id  FROM '  . QUESTION_TABLE;
         $result = get_data($query);
         if($result){
             foreach($result as $questions){
@@ -256,7 +251,7 @@ class H2hra extends HRA{
     }
 
     public static function getLocalAnswerIDs(){
-        $query = 'SELECT h2_answer_id  FROM ' . elgg_get_config("dbprefix") . ANSWER_TABLE;
+        $query = 'SELECT h2_answer_id  FROM '  . ANSWER_TABLE;
         $result = get_data($query);
         if($result){
             foreach($result as $answers){
@@ -270,7 +265,7 @@ class H2hra extends HRA{
 
     public static function getToken($guid){
 
-        $query = 'SELECT h2_token  FROM ' . elgg_get_config("dbprefix") . SHN_USER_TABLE.' WHERE elgg_user_guid ='.$guid;
+        $query = 'SELECT h2_token  FROM '  . SHN_USER_TABLE.' WHERE elgg_user_guid ='.$guid;
 
         try{
              $results = get_data($query);
@@ -357,34 +352,34 @@ class H2hra extends HRA{
 
     public static function getH2Questions($cat, $orderby=''){
         $orderby = ($orderby=='') ? ' ORDER BY h2_question_id ' : ' ORDER BY ' .$orderby ;
-        $query = 'SELECT *  FROM ' . elgg_get_config("dbprefix") . QUESTION_TABLE.' WHERE category = "'.$cat.'"'.$orderby;
+        $query = 'SELECT *  FROM '  . QUESTION_TABLE.' WHERE category = "'.$cat.'"'.$orderby;
         $questions = (array) get_data($query);
         return $questions;
     }
 
     public static function getH2Answers($qid, $orderby=''){
         $orderby = ($orderby=='') ? ' ORDER BY id ' : ' ORDER BY ' .$orderby ;
-        $query = 'SELECT *  FROM ' . elgg_get_config("dbprefix") . ANSWER_TABLE.' WHERE shn_hra_question_id = "'.$qid.'"'.$orderby;
+        $query = 'SELECT *  FROM '  . ANSWER_TABLE.' WHERE shn_hra_question_id = "'.$qid.'"'.$orderby;
         $answers = (array) get_data($query);
         return $answers;
     }
 // temp
     public static function getBasicQuestions($cat, $orderby=''){
         $orderby = ($orderby=='') ? ' ORDER BY qid ' : ' ORDER BY ' .$orderby ;
-        $query = 'SELECT *  FROM ' . elgg_get_config("dbprefix") . QUESTION_TABLE.' WHERE category = "'.$cat.'"'.$orderby;
+        $query = 'SELECT *  FROM '  . QUESTION_TABLE.' WHERE category = "'.$cat.'"'.$orderby;
         $questions = (array) get_data($query);
         return $questions;
     }
 
     public static function getBasicAnswers($qid, $orderby=''){
         $orderby = ($orderby=='') ? ' ORDER BY id ' : ' ORDER BY ' .$orderby ;
-        $query = 'SELECT *  FROM ' . elgg_get_config("dbprefix") . ANSWER_TABLE.' WHERE qid = "'.$qid.'"'.$orderby;
+        $query = 'SELECT *  FROM '  . ANSWER_TABLE.' WHERE qid = "'.$qid.'"'.$orderby;
         $answers = (array) get_data($query);
         return $answers;
     }
 
     public static function HraToH2HraId($hra_id){
-        $query = 'SELECT h2_hra_id  FROM ' . elgg_get_config("dbprefix") . HRA_TABLE.' WHERE id ='.$hra_id;
+        $query = 'SELECT h2_hra_id  FROM '  . HRA_TABLE.' WHERE id ='.$hra_id;
         $hrauserinfo = get_data($query);
         return $hrauserinfo[0]->h2_hra_id;
     }

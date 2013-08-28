@@ -1,8 +1,13 @@
 <?php
 $guid = elgg_extract('guid', $vars, '');
 $hra_id = elgg_extract('hra_id', $vars, '');
+$retake = elgg_extract('retake', $vars, '');
 $current_survey = elgg_extract('current_survey', $vars, '');
 $current_survey = ($current_survey=='')? '1' : $current_survey;
+
+if($retake=='retake'){
+    $myAnswers = H2hra::getAnswers($token,$hra_id);
+}
 
 
 if($_SERVER['SERVER_NAME']=='127.0.0.1') var_dump($_REQUEST);
@@ -13,14 +18,13 @@ $token = $userinfo['h2_token'];
 
 //  need to update to real API
 $surveylist = array(
-                    1 => 'Basic Profile',
-                    2 => 'Eating & Lifestyle Habits',
-                    3 => 'Screening for Healthy Living/ Cancer Preventa',
-                    4 => 'Fitness Level Questionnaire',
-                    5 => 'Program Goals',
-                    6 => 'Screening for Healthy Heart Diet Plan',
-                    7 => 'Screening for Diabetic Health Program',
-                    8 => 'Screening for Healthy Joint Diet');
+                    1 => 'Eating & Lifestyle Habits',
+                    2 => 'Screening for Healthy Living/ Cancer Preventa',
+                    3 => 'Fitness Level Questionnaire',
+                    4 => 'Program Goals',
+                    5 => 'Screening for Healthy Heart Diet Plan',
+                    6 => 'Screening for Diabetic Health Program',
+                    7 => 'Screening for Healthy Joint Diet');
 
 $questions =  H2hra::getH2Questions($surveylist[$current_survey], 'h2_question_id');
 

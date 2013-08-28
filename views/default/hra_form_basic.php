@@ -5,12 +5,14 @@ if($retry){
     $error = (isset($_GET['error'])&&($_GET['error'])) ? $_GET['error'] : '';
     $guid = $_GET["guid"];
     $token = $_GET["token"];
+    $age = $_GET['age'];
     $h2_hra_id = $_GET["h2_hra_id"];
     $gender = $_GET['gender'];
     $ethnicity = $_GET["ethnicity"];
     $weight = $_GET["weight"];
     $height = $_GET["height"];
-
+    $waist = $_GET["waist"];
+    $livingarea = $_GET["livingarea"];
 }else{
 
     $guid = elgg_extract('guid', $vars, '');
@@ -26,7 +28,7 @@ if($retry){
         $h2_hra_id = (array) H2hra::getH2HraId($guid);
 
         if($h2_hra_id[0]->h2_hra_id == $hra_id){
-            echo 'only one time per day  [retake ? ]';
+            echo 'only one time per day  [ Retake ]';
 
         }else{
             $result = H2hra::saveHraId($guid, $hra_id);
@@ -39,14 +41,15 @@ if($retry){
 
     }
 
-
+    $age = $userinfo['age'];
     $gender = $userinfo['gender'];
     $ethnicity = $userinfo["ethnicity"];
     $height = explode('.', $userinfo['height']);
     $feet = $height[0];
     $inches = $height[1];
     $weight = $userinfo["height"];
-
+    $waist = $userinfo["waist"];
+    $livingarea = $userinfo["livingarea"];
 
 
 }
@@ -82,7 +85,16 @@ if($retry){
         </div>
          <div id="tabs-basic" class="basic-form">
               <table class="basic-form-table">
-                <!-- Gender & Marital Status -->
+                  <tr>
+                      <td  class="label">
+                          <span class="number"> 1 </span> <span> Age </span>
+                      </td>
+                      <td class="input">
+
+                          <input type="text" class="smallinput" name="age" value="<?=$age?>" />
+
+                      </td>
+                  </tr>
                 <tr>
                     <td class="label">
                         <span class="number"> 1 </span> <span class="required-label">Sex</span>
@@ -113,7 +125,15 @@ if($retry){
                           <input type="text" class="smallinput" name="weight" value="<?=$weight?>" />(Pounds)
                       </td>
                   </tr>
+                  <tr>
+                      <td  class="label">
+                          <span class="number"> 5 </span> <span> Waist Line Circumference (in inches) </span>
+                      </td>
+                      <td class="input">
 
+                          <input type="text" class="smallinput" name="waist" value="<?=$waist?>" />(inches)
+                      </td>
+                  </tr>
                   <tr>
                       <td  class="label">
                           <span class="number"> 4 </span> <span> Ethnicity </span>
@@ -129,7 +149,19 @@ if($retry){
 
                       </td>
                   </tr>
+                  <tr>
+                      <td  class="label">
+                          <span class="number"> 7 </span> <span> What type of area do you live in?</span>
+                      </td>
+                      <td class="input">
 
+                          <select name="livingarea">
+                              <option value="city" <?php if($livingarea=='city') echo 'checked=checked';?> >Urban City</option>
+                              <option value="mountain"  <?php if($livingarea=='mountain') echo 'checked=checked';?>  >Mountainous region</option>
+                              <option value="suburbs"  <?php if($livingarea=='suburbs') echo 'checked=checked';?> >Suburbs</option>
+                          </select>
+                      </td>
+                  </tr>
 
 
             </table>
