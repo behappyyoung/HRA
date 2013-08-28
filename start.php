@@ -51,6 +51,7 @@ function hra_page_handler($page) {
                             'email'=>$email);
 
 
+
     if (!isset($page[0])) {
         $page[0] = 'index';
     }
@@ -72,10 +73,10 @@ function hra_page_handler($page) {
             $form = elgg_view('hra_form_life', array('guid'=>$guid, 'hra_id'=>$page[1]));
             break;
         case 'form' ;
-            $form = elgg_view('hra_form', array('guid'=>$guid, 'current_survey' => $page[1], 'hra_id'=>$page[2]));
+            $form = elgg_view('hra_form', array('guid'=>$guid, 'current_survey' => $page[1], 'h2_hra_id'=>$page[2]));
             break;
         case 'finish' ;
-            $form = elgg_view('hra_finish', array('guid'=>$guid, 'hra_id'=>$page[1]));
+            $form = elgg_view('hra_finish', array('guid'=>$guid, 'h2_hra_id'=>$page[1]));
             break;
     }
 
@@ -98,5 +99,4 @@ function hra_page_handler($page) {
 
     return true;
 }
-?>
 

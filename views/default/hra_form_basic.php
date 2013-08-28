@@ -11,6 +11,7 @@ if($retry){
     $ethnicity = $_GET["ethnicity"];
     $weight = $_GET["weight"];
     $height = $_GET["height"];
+
     $waist = $_GET["waist"];
     $livingarea = $_GET["livingarea"];
 }else{
@@ -44,15 +45,17 @@ if($retry){
     $age = $userinfo['age'];
     $gender = $userinfo['gender'];
     $ethnicity = $userinfo["ethnicity"];
-    $height = explode('.', $userinfo['height']);
-    $feet = $height[0];
-    $inches = $height[1];
-    $weight = $userinfo["height"];
+    $height = $userinfo['height'];
+    $weight = $userinfo["weight"];
     $waist = $userinfo["waist"];
     $livingarea = $userinfo["livingarea"];
 
 
 }
+
+$height = explode('.', $height);
+$feet = $height[0];
+$inches = $height[1];
 
 ?>
 <style>
@@ -80,7 +83,7 @@ if($retry){
              action="<?php echo elgg_add_action_tokens_to_url("/action/hra/save_basic"); ?>">
     <input type="hidden" name="guid" value="<?=$guid?>" />
     <input type="hidden" name="token" value="<?=$token?>" />
-    <input type="hidden" name="hra_id" value="<?=$h2_hra_id?>" />
+    <input type="hidden" name="h2_hra_id" value="<?=$h2_hra_id?>" />
         <div class="form-tabs" id="form-tabs">
         </div>
          <div id="tabs-basic" class="basic-form">

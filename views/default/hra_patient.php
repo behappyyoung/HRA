@@ -8,8 +8,6 @@
 
 
 <?php
-$debug = ($_SERVER['SERVER_NAME']=='1127.0.0.1')?true: false;
-
 
 
 $patientinfo = elgg_extract('patientinfo', $vars, '');

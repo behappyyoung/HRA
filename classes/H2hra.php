@@ -345,8 +345,9 @@ class H2hra extends HRA{
         return HRA::updateUser($guid, $para, SHN_USER_TABLE);
     }
 
-    public static function updateResult($guid, $hra_id, $para){
+    public static function updateResult($guid, $h2_hra_id, $para){
         $user_id = H2hra::getUserId($guid);
+        $hra_id = H2hra::H2HraToHraId($h2_hra_id);
         return HRA::updateHra($user_id, $hra_id, $para, STAT_TABLE);
     }
 
@@ -382,5 +383,11 @@ class H2hra extends HRA{
         $query = 'SELECT h2_hra_id  FROM '  . HRA_TABLE.' WHERE id ='.$hra_id;
         $hrauserinfo = get_data($query);
         return $hrauserinfo[0]->h2_hra_id;
+    }
+
+    public static function H2HraToHraId($h2_hra_id){
+        $query = 'SELECT id  FROM '  . HRA_TABLE.' WHERE h2_hra_id ='.$h2_hra_id;
+        $hrauserinfo = get_data($query);
+        return $hrauserinfo[0]->id;
     }
 }

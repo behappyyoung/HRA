@@ -12,7 +12,7 @@ $user = elgg_get_logged_in_user_entity();
 
 $guid = $_POST["guid"];
 $token = $_POST["token"];
-$hra_id = $_POST["hra_id"];
+$h2_hra_id = $_POST["h2_hra_id"];
 $age = $_POST["age"];
 $gender = $_POST["gender"];
 $ethnicity = $_POST["ethnicity"];
@@ -29,9 +29,6 @@ if(empty($age)){
     $error .= ' age is missing <br /> ';
 }
 
-if(empty($waist)){
-    $error .= ' waist is missing  <br /> ';
-}
 
 if(empty($livingarea)){
     $error .= ' livting area is missing  <br /> ';
@@ -65,7 +62,7 @@ if($error!=''){
     $paraArray = array(
         'guid'=>$guid,
         'token'=>$token,
-        'hra_id'=>$hra_id,
+        'h2_hra_id'=>$h2_hra_id,
         'gender'=>$gender,
         'race'=>$race,
         'weight'=>$weight,
@@ -103,7 +100,7 @@ if($error!=''){
         $livinguuid = '52120fd4-8d8c-4aec-b954-2488ac116443';
     }
     $answerArray = array(
-                        'hra_id'=>$hra_id,
+                        'hra_id'=>$h2_hra_id,
                         "answers[gender]"=>$genderuuid,
                         "answers[ethnicity]"=>$ethnicity,
                         "answers[weight]"=>$weight,
@@ -113,8 +110,7 @@ if($error!=''){
                         "answers[living_area]"=>$livinguuid);
     $result = H2hra::postAnswers($token, $answerArray);
 
-   // $forwardURL = elgg_get_site_url().'hra/life/'.$hra_id;
-    $forwardURL = elgg_get_site_url().'hra/form/1/'.$hra_id;
+    $forwardURL = elgg_get_site_url().'hra/form/1/'.$h2_hra_id;
 }
 
 forward($forwardURL);

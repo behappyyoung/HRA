@@ -3,6 +3,7 @@ $debug = ($_SERVER['SERVER_NAME']=='1127.0.0.1')?true: false;
 $user_role = roles_get_role();
 $role= $user_role->get("title");
 $hrainfo = (array) H2hra::getHraStatMembers();
+ //if($_SERVER['SERVER_NAME']=='127.0.0.1') var_dump($hrainfo);
 echo $role.'<br />';
 
 ?>
@@ -29,7 +30,7 @@ echo $role.'<br />';
     }
 </script>
 
-<!-- <button class="'elgg-submit-button" onclick="showQuestions();">Update HRA Questions </button>  <br /> -->
+<button class="'elgg-submit-button" onclick="showQuestions();">Update HRA Questions </button>  <br />
 <button class="'elgg-submit-button" onclick="patchQuestions();">Patch HRA Questions </button>  <br />
 <br />
 HRA Status <br />
@@ -49,5 +50,5 @@ HRA Status <br />
 
 
 <div id="questions" title="Basic dialog" style="display:none;">
-    <p>TEST.</p>
+    <p>TEST.  NOT YET</p>
 </div>
