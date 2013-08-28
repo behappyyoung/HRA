@@ -4,8 +4,6 @@ $debug = ($_SERVER['SERVER_NAME']=='1127.0.0.1')?true: false;
 $user_role = roles_get_role();
 $role= $user_role->get("title");
 
-echo $role;
-
 $token = H2hra::getAdminSession();
 $questions =  H2hra::getQuestions($token);
 

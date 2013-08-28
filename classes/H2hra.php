@@ -245,9 +245,14 @@ class H2hra extends HRA{
     public static function getLocalQuestionIDs(){
         $query = 'SELECT h2_question_id  FROM ' . elgg_get_config("dbprefix") . QUESTION_TABLE;
         $result = get_data($query);
-        foreach($result as $questions){
-            $qid[] = $questions->qid;
+        if($result){
+            foreach($result as $questions){
+                $qid[] = $questions->qid;
+            }
+        }else{
+            $qid = array();
         }
+
 
         return $qid;
     }
@@ -255,10 +260,13 @@ class H2hra extends HRA{
     public static function getLocalAnswerIDs(){
         $query = 'SELECT h2_answer_id  FROM ' . elgg_get_config("dbprefix") . ANSWER_TABLE;
         $result = get_data($query);
-        foreach($result as $answers){
-            $aid[] = $answers->aid;
+        if($result){
+            foreach($result as $answers){
+                $aid[] = $answers->aid;
+            }
+        }else{
+            $aid = array();
         }
-
         return $aid;
     }
 
