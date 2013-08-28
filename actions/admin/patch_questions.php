@@ -3,7 +3,7 @@
 $debug = ($_SERVER['SERVER_NAME']=='1127.0.0.1')?true: false;
 $user_role = roles_get_role();
 $role= $user_role->get("title");
-$hrainfo = (array) H2hra::getHraStatMember();
+
 echo $role;
 
 $token = H2hra::getAdminSession();
@@ -15,11 +15,11 @@ foreach($questions as $sections){
         $Questionnaire = $sections['Questionnaire'];
 
         $myquestion[$QuestionnaireSection['id']] = array(
-            'qid'=>$QuestionnaireSection['id'],
+            'h2_question_id'=>$QuestionnaireSection['id'],
             'category' => $QuestionnaireSection['name'],
             'name' =>    $QuestionnaireSection['name'],
-            'desc' =>    $QuestionnaireSection['name'],
-            'type' => '0',
+            'h2_desc' =>    $QuestionnaireSection['name'],
+            'h2_type' => '0',
             'main' => $QuestionnaireSection['id']
         );
         foreach($Questionnaire as $question){
@@ -32,11 +32,11 @@ foreach($questions as $sections){
                     break;
             }
             $myquestion[$question['id']] = array(
-                'qid'=>$question['id'],
+                'h2_question_id'=>$question['id'],
                 'category' => $QuestionnaireSection['name'],
                 'name' =>    $question['slug'],
-                'desc' =>    $question['title'],
-                'type' => $type,
+                'h2_desc' =>    $question['title'],
+                'h2_type' => $type,
                 'main' => $QuestionnaireSection['id']
             );
 
@@ -45,12 +45,12 @@ foreach($questions as $sections){
                 foreach($answers as $answer){
 
                     $myanswer[$answer['id']] = array(
-                        'aid'=> $answer['id'],
-                        'uuid'=> $answer['uuid'],
-                        'qid'=> $answer['questionnair_id'],
-                        'desc'=> $answer['answer'],
-                        'score'=> $answer['score'],
-                        'type'=>'select'            // all select for now
+                        'h2_answer_id'=> $answer['id'],
+                        'h2_uuid'=> $answer['uuid'],
+                        'shn_hra_question_id'=> $answer['questionnair_id'],
+                        'h2_desc'=> $answer['answer'],
+                  //      'score'=> $answer['score'],
+                        'h2_type'=>'select'            // all select for now
                     );
                 }
 

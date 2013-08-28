@@ -2,7 +2,7 @@
 $debug = ($_SERVER['SERVER_NAME']=='1127.0.0.1')?true: false;
 $user_role = roles_get_role();
 $role= $user_role->get("title");
-
+$hrainfo = (array) H2hra::getHraStatMembers();
 echo $role.'<br />';
 
 ?>

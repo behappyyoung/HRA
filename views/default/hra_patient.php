@@ -21,16 +21,26 @@ $guid =  $patientinfo['guid'];
 $hrauserinfo =(array) H2hra::getHraUser($guid);
 
 if(empty($hrauserinfo)){
-    echo H2hra::createAccount($patientinfo['guid'], $patientinfo['username'], $patientinfo['firstname'],
-        $patientinfo['lastname'], $patientinfo['gender'], $patientinfo['email']);
-    forward(elgg_get_site_url().'hra/');
-}elseif($hrauserinfo['token']==''){
-    $token = H2hra::getSession($hrauserinfo['username'], $hrauserinfo['password']);
-    echo H2hra::saveToken($guid, $token);
-    forward(elgg_get_site_url().'hra/');
+    $result = H2hra::createAccount($patientinfo['guid'], $patientinfo['username'], $patientinfo['firstname'],
+        $patientinfo['lastname'], $patientinfo['gender'], $patientinfo['email'], '1');
+    if($result=='OK'){
+        forward(elgg_get_site_url().'hra/');
+    }else{
+        echo $result;
+    }
+
+}elseif($hrauserinfo['h2_token']==''){
+    $token = H2hra::getSession($hrauserinfo['h2_username'], $hrauserinfo['h2_password']);
+    $result= H2hra::saveToken($guid, $token);
+    if($result){
+        forward(elgg_get_site_url().'hra/');
+    }else{
+        echo 'DB input Error';
+    }
+
 }else{
     echo '<a href="'.elgg_get_site_url().'hra/basic/">Take New Test</a> <br />';
-    $hrainfo = (array) H2hra::getHraStat($guid);
+    $hrainfo = (array) H2hra::getH2Stat($guid);
 }
 
 

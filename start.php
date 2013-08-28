@@ -28,12 +28,10 @@ function hra_public($hook, $handler, $return, $params) {
 function hra_page_handler($page) {
     $user = elgg_get_logged_in_user_entity();
     $guid =  $user->getGUID();
- //var_dump($user);
     $isadmin= $user->get('admin');
     $username= $user->get('username');
     $email= $user->get('email');
     $name= explode(' ', $user->get('name'));
-    $guid =  $user->getGUID();
     $lastname = (sizeof($name)==3)? $name[2] : $name[1];
     $patientsMetadata = elgg_get_metadata(array(
         "metadata_names" =>  array("gender"),

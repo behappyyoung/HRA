@@ -4,11 +4,11 @@ $guid = elgg_extract('guid', $vars, '');
 $hra_id = elgg_extract('hra_id', $vars, '');
 
 $userinfo = (array) H2hra::getHraUser($guid);
-$token = $userinfo['token'];
+$token = $userinfo['h2_token'];
 
 
 $myResult = H2hra::getResult($token,$hra_id);
-
+unset($myResult['diet_plan_detail']);
 $myAnswers = H2hra::getAnswers($token,$hra_id);
 
 if($_SERVER['SERVER_NAME']=='1127.0.0.1') var_dump($myAnswers);
@@ -16,6 +16,7 @@ $serialAnswers = serialize($myAnswers);
 
 //save result
 $para = $myResult;
+
 $para['answerlists'] = str_replace('"', '\'', $serialAnswers);
 $result = H2hra::updateResult($guid, $hra_id, $para);
 

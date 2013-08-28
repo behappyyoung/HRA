@@ -8,7 +8,7 @@ $current_survey = ($current_survey=='')? '1' : $current_survey;
 if($_SERVER['SERVER_NAME']=='1127.0.0.1') var_dump($_REQUEST);
 
 $userinfo = (array) H2hra::getHraUser($guid);
-$token = $userinfo['token'];
+$token = $userinfo['h2_token'];
 
 
 //  need to update to real API
@@ -20,21 +20,21 @@ $surveylist = array(1 => 'Eating & Lifestyle Habits',
                     6 => 'Screening for Diabetic Health Program',
                     7 => 'Screening for Healthy Joint Diet');
 
-$questions =  H2hra::getH2Questions($surveylist[$current_survey], 'qid');
+$questions =  H2hra::getH2Questions($surveylist[$current_survey], 'h2_question_id');
 
 
 foreach($questions as $question){
-    if($question->main==$question->qid){                         //main
+    if($question->main==$question->h2_question_id){                         //main
         $subtitle = $question->name;
     }else{                            //sub - real questions
-        $answers =  H2hra::getH2Answers($question->qid);
-        $cq[$question->qid] = array('name' => $question->name,
-            'desc' => $question->desc,
+        $answers =  H2hra::getH2Answers($question->h2_question_id);
+        $cq[$question->h2_question_id] = array('name' => $question->name,
+            'h2_desc' => $question->h2_desc,
             'answerArray'=> $answers);
 
     }
 }
-
+//var_dump($cq);
 //
 
 ?>
@@ -74,15 +74,15 @@ foreach($questions as $question){
 
             <?php
             foreach($cq as $questionid => $questionArray){
-                echo '<tr> <td class="label">  <span class="space">  </span> <span class="required-label"> '.$questionArray['desc'].' </span> </td>';
+                echo '<tr> <td class="label">  <span class="space">  </span> <span class="required-label"> '.$questionArray['h2_desc'].' </span> </td>';
                 echo '<td class="input">';
                 //  var_dump($questionArray['answerArray'] );
                 if(empty($questionArray['answerArray'])){
                     echo '<input type="text" name="answers['.$questionArray['name'].']" />' ;
                 }else{
                     foreach($questionArray['answerArray'] as $answerObject){
-                        $selected = ($myAnswers[$questionid]==$answerObject->uuid) ? 'checked=checked ' : '';
-                        echo  '<input type="radio" name="answers['.$questionArray['name'].']" value=" '.$answerObject->uuid.'"'.$selected.' class="checkbox" > '.$answerObject->desc.'<br />';
+                        $selected = ($myAnswers[$questionid]==$answerObject->h2_uuid) ? 'checked=checked ' : '';
+                        echo  '<input type="radio" name="answers['.$questionArray['name'].']" value=" '.$answerObject->h2_uuid.'"'.$selected.' class="checkbox" > '.$answerObject->h2_desc.'<br />';
                     }
                 }
 
