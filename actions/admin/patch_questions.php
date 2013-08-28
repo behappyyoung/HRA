@@ -59,8 +59,6 @@ foreach($questions as $sections){
 
 }
 
-//var_dump($myquestion);
-//var_dump($myanswer);
 
 //$localquestions = H2hra::getLocalQuestions();
 $qid = H2hra::getLocalQuestionIDs();
@@ -69,14 +67,12 @@ $aid = H2hra::getLocalAnswerIDs();
 $result = 'OK';
 foreach($myquestion as $id => $questionArray){
     if(in_array($id, $qid)){  //exists => update
-        //    echo $id.'update <br />';
         try{
             H2hra::updateH2Question($id, $questionArray);
         }catch (Exception $e){
             $result .= 'Error : '. $e->getMessage();
         }
     }else{  // insert
-        //echo $id.'insert <br />';
         try{
             H2hra::saveQuestion($questionArray);
         }catch (Exception $e){
@@ -95,7 +91,6 @@ foreach($myanswer as $id => $answerArray){
             $result .= 'Error : '. $e->getMessage();
         }
     }else{  // insert
-       // echo $id.'insert <br />';
         try{
             H2hra::saveAnswer($answerArray);
         }catch (Exception $e){

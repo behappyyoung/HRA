@@ -8,18 +8,27 @@ $token = $userinfo['h2_token'];
 
 
 $myResult = H2hra::getResult($token,$hra_id);
-unset($myResult['diet_plan_detail']);
+
 $myAnswers = H2hra::getAnswers($token,$hra_id);
 
 if($_SERVER['SERVER_NAME']=='1127.0.0.1') var_dump($myAnswers);
 $serialAnswers = serialize($myAnswers);
 
 //save result
-$para = $myResult;
+$dbpara = array(
+    'bmi' =>$myResult['bmi'],
+    'bmr' =>$myResult['bmr'],
+    'diet_plan' =>$myResult['diet_plan'],
+    'calories_goal' =>$myResult['calories_goal'],
+    'strength_level' =>$myResult['strength_level'],
+    'fitness_classification_level' =>$myResult['fitness_classification_level'],
+    'vo2_max' =>$myResult['vo2_max'],
+    'aerobic_capacity' =>$myResult['aerobic_capacity'],
+    'answerlists' =>str_replace('"', '\'', $serialAnswers),
+    'done' => '1'
+);
 
-$para['answerlists'] = str_replace('"', '\'', $serialAnswers);
-$result = H2hra::updateResult($guid, $hra_id, $para);
-
+$result = H2hra::updateResult($guid, $hra_id, $dbpara);
 
 ?>
 
