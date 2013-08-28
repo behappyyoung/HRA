@@ -52,14 +52,14 @@ HRA STATS <br />
     <th>HRA</th><th>date</th><th>bmi</th><th>bmr</th><th>diet plan</th><th>calories goal</th><th>strength level</th><th>fitness level</th>
     <?php
            foreach($hrainfo as $stat){
-               echo '<tr><td>'.$stat->hra_id.'</td> <td>'.$stat->date.'</td>';
+               echo '<tr><td>'.$stat->shn_hra_id.'</td> <td>'.$stat->date.'</td>';
                echo '<td>'.$stat->bmi.'</td><td>'.$stat->bmr.'</td><td>'.$stat->diet_plan.'</td><td>'.$stat->calories_goal.'</td><td>'.$stat->strenth_level.'</td><td>'.$stat->fitness_classification_level.'</td>';
 
                echo '  <td>';
                if($stat->done){
                    echo $stat->score;
                }else{
-                   echo '<a href="'.elgg_get_site_url().'hra/basic/'.$stat->hra_id.'"> Finish </a>';
+                   echo '<a href="'.elgg_get_site_url().'hra/basic/'.$stat->shn_hra_id.'"> Finish </a>';
                }
                echo '</td></tr>';
            }

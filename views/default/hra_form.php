@@ -5,37 +5,36 @@ $current_survey = elgg_extract('current_survey', $vars, '');
 $current_survey = ($current_survey=='')? '1' : $current_survey;
 
 
-if($_SERVER['SERVER_NAME']=='1127.0.0.1') var_dump($_REQUEST);
+if($_SERVER['SERVER_NAME']=='127.0.0.1') var_dump($_REQUEST);
 
 $userinfo = (array) H2hra::getHraUser($guid);
 $token = $userinfo['h2_token'];
 
 
 //  need to update to real API
-$surveylist = array(1 => 'Eating & Lifestyle Habits',
-                    2 => 'Screening for Healthy Living/ Cancer Preventa',
-                    3 => 'Fitness Level Questionnaire',
-                    4 => 'Program Goals',
-                    5 => 'Screening for Healthy Heart Diet Plan',
-                    6 => 'Screening for Diabetic Health Program',
-                    7 => 'Screening for Healthy Joint Diet');
+$surveylist = array(
+                    1 => 'Basic Profile',
+                    2 => 'Eating & Lifestyle Habits',
+                    3 => 'Screening for Healthy Living/ Cancer Preventa',
+                    4 => 'Fitness Level Questionnaire',
+                    5 => 'Program Goals',
+                    6 => 'Screening for Healthy Heart Diet Plan',
+                    7 => 'Screening for Diabetic Health Program',
+                    8 => 'Screening for Healthy Joint Diet');
 
 $questions =  H2hra::getH2Questions($surveylist[$current_survey], 'h2_question_id');
-
 
 foreach($questions as $question){
     if($question->main==$question->h2_question_id){                         //main
         $subtitle = $question->name;
     }else{                            //sub - real questions
         $answers =  H2hra::getH2Answers($question->h2_question_id);
-        $cq[$question->h2_question_id] = array('name' => $question->name,
-            'h2_desc' => $question->h2_desc,
-            'answerArray'=> $answers);
-
+        $cq[$question->h2_question_id] = array(
+                'name' => $question->name,
+                'h2_desc' => $question->h2_desc,
+                'answerArray'=> $answers);
     }
 }
-//var_dump($cq);
-//
 
 ?>
 
@@ -50,7 +49,7 @@ foreach($questions as $question){
     .basic-form-table .input { text-align: left; padding-left: 40px; }
     .basic-form-table .smallinput  {width:100px; height: 20px; margin: 5px; }
     .basic-form-table .checkbox  {width:20px; }
-
+    .subtitle {font-weight: bolder; text-transform:uppercase; }
     .buttons {float:right;margin-right: 50px;}
     .buttons .cancel {background-color: #d0cbce;}
     .buttons .save {background-color: #9295a4;}
@@ -67,6 +66,7 @@ foreach($questions as $question){
     <input type="hidden" name="hra_id" value="<?=$hra_id?>" />
     <input type="hidden" name="current_survey" value="<?=$current_survey?>" />
     <div class="form-tabs" id="form-tabs"> </div>
+    <div class="progress" id="progress">  <img /> </div>
     <div class="subtitle" > <?=$subtitle?> </div>
     <div id="tabs-basic" class="basic-form">
         <table class="basic-form-table">
@@ -76,7 +76,6 @@ foreach($questions as $question){
             foreach($cq as $questionid => $questionArray){
                 echo '<tr> <td class="label">  <span class="space">  </span> <span class="required-label"> '.$questionArray['h2_desc'].' </span> </td>';
                 echo '<td class="input">';
-                //  var_dump($questionArray['answerArray'] );
                 if(empty($questionArray['answerArray'])){
                     echo '<input type="text" name="answers['.$questionArray['name'].']" />' ;
                 }else{

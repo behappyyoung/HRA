@@ -191,7 +191,6 @@ class H2hra extends HRA{
     }
 
     public static function getH2HraId($guid){
-       // $query = 'select h.h2_hra_id from '.SHN_USER_TABLE.' u, '.STAT_TABLE.' s, '.HRA_TABLE.' h WHERE u.id=s.shn_user_id and s.shn_hra_id = h.id and u.elgg_user_guid = '.$guid;
         $user_id = H2hra::getUserId($guid);
         $query = 'select h.h2_hra_id from '.elgg_get_config("dbprefix") . HRA_TABLE.' h WHERE id = (select shn_hra_id from '.elgg_get_config("dbprefix") . STAT_TABLE.' s WHERE shn_user_id= '.$user_id.')';
         $h2_hra_id = get_data($query);
@@ -201,9 +200,8 @@ class H2hra extends HRA{
 
 
     public static function getH2Stat($guid='', $orderby=''){
-        $query = 'SELECT id  FROM ' . elgg_get_config("dbprefix") . SHN_USER_TABLE .' WHERE elgg_user_guid='.$guid;
-        $user_id = get_data($query);
-        $hrainfo = HRA::getStat($user_id[0]->id, $orderby, STAT_TABLE);
+        $user_id = H2hra::getUserId($guid);
+        $hrainfo = HRA::getStat($user_id, $orderby, STAT_TABLE);
         return $hrainfo;
     }
 
@@ -385,7 +383,9 @@ class H2hra extends HRA{
         return $answers;
     }
 
-    public static function updateDatabase($table, $para){
-
+    public static function HraToH2HraId($hra_id){
+        $query = 'SELECT h2_hra_id  FROM ' . elgg_get_config("dbprefix") . HRA_TABLE.' WHERE id ='.$hra_id;
+        $hrauserinfo = get_data($query);
+        return $hrauserinfo[0]->h2_hra_id;
     }
 }

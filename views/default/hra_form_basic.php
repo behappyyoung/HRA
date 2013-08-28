@@ -5,7 +5,7 @@ if($retry){
     $error = (isset($_GET['error'])&&($_GET['error'])) ? $_GET['error'] : '';
     $guid = $_GET["guid"];
     $token = $_GET["token"];
-    $hra_id = $_GET["hra_id"];
+    $h2_hra_id = $_GET["h2_hra_id"];
     $gender = $_GET['gender'];
     $ethnicity = $_GET["ethnicity"];
     $weight = $_GET["weight"];
@@ -13,37 +13,30 @@ if($retry){
 
 }else{
 
-
-
     $guid = elgg_extract('guid', $vars, '');
     $hra_id = elgg_extract('hra_id', $vars, '');
 
     $userinfo = (array) H2hra::getHraUser($guid);
- //var_dump($userinfo);
     $token = $userinfo['h2_token'];
 
 
     if($hra_id==''){                // new
         $hra_id= H2hra::getAssessment($token);
 
-      //  $hrainfo = (array) H2hra::getH2Stat($guid, 'shn_hra_id desc');
         $h2_hra_id = (array) H2hra::getH2HraId($guid);
 
         if($h2_hra_id[0]->h2_hra_id == $hra_id){
-            //var_dump($hrainfo);
             echo 'only one time per day  [retake ? ]';
-            //$answers = H2hra::getAnswers($token, $hra_id);
 
         }else{
             $result = H2hra::saveHraId($guid, $hra_id);
-        }
 
-    //    $questions = H2hra::getQuestions($token);
+            $h2_hra_id = $hra_id;
+        }
     }else{              // retake ones
 
-        //$answers = H2hra::getAnswers($token, $hra_id);
+        $h2_hra_id = H2hra::HraToH2HraId($hra_id);
 
-        //$questions = H2hra::getQuestions($token, $hra_id);
     }
 
 
@@ -84,7 +77,7 @@ if($retry){
              action="<?php echo elgg_add_action_tokens_to_url("/action/hra/save_basic"); ?>">
     <input type="hidden" name="guid" value="<?=$guid?>" />
     <input type="hidden" name="token" value="<?=$token?>" />
-    <input type="hidden" name="hra_id" value="<?=$hra_id?>" />
+    <input type="hidden" name="hra_id" value="<?=$h2_hra_id?>" />
         <div class="form-tabs" id="form-tabs">
         </div>
          <div id="tabs-basic" class="basic-form">
