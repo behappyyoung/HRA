@@ -3,7 +3,7 @@ $debug = ($_SERVER['SERVER_NAME']=='1127.0.0.1')?true: false;
 $user_role = roles_get_role();
 $role= $user_role->get("title");
 $hrainfo = (array) H2hra::getHraStatMembers();
- //if($_SERVER['SERVER_NAME']=='127.0.0.1') var_dump($hrainfo);
+ if($_SERVER['SERVER_NAME']=='127.0.0.1') var_dump($hrainfo);
 echo $role.'<br />';
 
 ?>
@@ -35,13 +35,14 @@ echo $role.'<br />';
 <br />
 HRA Status <br />
 <table class="hra-table">
-    <th>Name</th><th>HRA</th><th>date</th><th>bmi</th><th>bmr</th><th>diet plan</th><th>calories goal</th><th>strength level</th><th>fitness level</th>
+    <th>User ID</th><th>HRA ID</th><th>date</th><th>bmi</th><th>bmr</th><th>diet plan</th><th>calories goal</th><th>strength level</th><th>fitness level</th>
+    <th>vo2_max</th>
     <?php
     foreach($hrainfo as $stat){
-        echo '<tr><td>'.$stat->first_name.'</td><td>'.$stat->hra_id.'</td> <td>'.$stat->date.'</td>';
-        echo '<td>'.$stat->bmi.'</td><td>'.$stat->bmr.'</td><td>'.$stat->diet_plan.'</td><td>'.$stat->calories_goal.'</td><td>'.$stat->strenth_level.'</td><td>'.$stat->fitness_classification_level.'</td>';
+        echo '<tr><td>'.$stat->shn_user_id.'</td><td>'.$stat->shn_hra_id.'</td> <td>'.$stat->date.'</td>';
+        echo '<td>'.$stat->bmi.'</td><td>'.$stat->bmr.'</td><td>'.$stat->diet_plan.'</td><td>'.$stat->calories_goal.'</td><td>'.$stat->strength_level.'</td><td>'.$stat->fitness_classification_level.'</td>';
 
-        echo '  <td>';
+        echo '<td>'.$stat->vo2_max.'</td>  <td>';
         echo '</td></tr>';
     }
     ?>

@@ -13,7 +13,9 @@ $user = elgg_get_logged_in_user_entity();
 $guid = $_POST["guid"];
 $token = $_POST["token"];
 $h2_hra_id = $_POST["h2_hra_id"];
-$age = $_POST["age"];
+$year = $_POST["year"];
+$month = $_POST["month"];
+$day = $_POST["day"];
 $gender = $_POST["gender"];
 $ethnicity = $_POST["ethnicity"];
 $weight = $_POST["weight"];
@@ -25,8 +27,8 @@ $error ='';
 $paraArray =array();
 
 
-if(empty($age)){
-    $error .= ' age is missing <br /> ';
+if(empty($year)||empty($month)||empty($day)){
+    $error .= ' Date of Birth is missing <br /> ';
 }
 
 
@@ -67,7 +69,9 @@ if($error!=''){
         'race'=>$race,
         'weight'=>$weight,
         'waist'=>$waist,
-        'age'=>$age,
+        'year'=>$year,
+        'month'=>$month,
+        'day'=>$day,
         'feet'=>$feet,
         'inches'=>$inches,
         'livingarea'=>$livingarea,
@@ -81,8 +85,9 @@ if($error!=''){
     $forwardURL = $_SERVER['HTTP_REFERER']. $error.$para;
 
 }else{
+    $dob = $year.'-'.$month.'-'.$day;
     $paraArray = array(
-        'age'=>$age,
+        'dob'=>$dob,
         'gender'=>$gender,
         'ethnicity'=>$ethnicity,
         'weight'=>$weight,
@@ -91,6 +96,7 @@ if($error!=''){
 
 
     H2hra::updateBasicInfo($guid, $paraArray);
+    $age = (date("md", date("U", mktime(0, 0, 0, $month, $day, $year))) > date("md") ? ((date("Y")-$year)-1):(date("Y")-$year));
     $genderuuid = ($gender=='male')? '52134584-5c74-4034-94d5-24bcac116443' : '52134584-c1bc-40a6-9dd8-24bcac116443';
     if($livingarea=='city'){
         $livinguuid = '52120fd4-a0dc-4da7-9b54-2488ac116443';
